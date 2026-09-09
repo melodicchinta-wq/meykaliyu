@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Jigsaw Playground 🧩</title>
+  <style>
+    :root {
+      --bg-color: #ffeef2;
+      --card-bg: #ffffff;
+      --primary: #ff8fa3;
+      --primary-hover: #ff758f;
+      --secondary: #c084fc;
+      --secondary-hover: #a855f7;
+      --text-color: #4a4e69;
+      --accent-correct: #4ade80;
+      --accent-wrong: #f87171;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Fredoka', 'Quicksand', 'Comic Sans MS', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffe5ec 0%, #f3d5ff 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      color: var(--text-color);
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 400px;
+      border-radius: 24px;
+      padding: 18px 14px;
+      box-shadow: 0 15px 35px rgba(255, 143, 163, 0.25);
+      border: 4px solid #fff;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      color: var(--primary);
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    p.subtitle {
+      font-size: 0.85rem;
+      color: #8d99ae;
+      margin-bottom: 10px;
+    }
+
+    /* Tombol Upload Custom Foto */
+    .upload-btn-wrapper {
+      margin-bottom: 12px;
+    }
+
+    .btn-upload {
+      background: #f0abfc;
+      color: white;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(240, 171, 252, 0.4);
+      transition: all 0.2s;
+      border: 2px solid #fff;
+    }
+
+    .btn-upload:active {
+      transform: scale(0.95);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+      transition: transform 0.1s, background 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      box-shadow: 0 5px 15px rgba(192, 132, 252, 0.4);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Screen Management */
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* Canvas Area Jigsaw Puzzle */
+    .puzzle-box {
+      background: #fff0f3;
+      border: 3px dashed #ffccd5;
+      border-radius: 18px;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    #jigsaw-canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px;
+      touch-action: none;
+      cursor: grab;
+      background: #ffffff;
+    }
+
+    #jigsaw-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Tabel Perkalian Style (Halaman 2) */
+    .table-card {
+      background: #fff5f7;
+      border: 3px dashed #ffccd5;
+      border-radius: 20px;
+      padding: 10px 6px;
+      margin-bottom: 12px;
+    }
+
+    .table-card h3 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      border-radius: 12px;
+    }
+
+    table.m-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 3px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    table.m-table th {
+      background: #c084fc;
+      color: white;
+      padding: 6px 2px;
+      border-radius: 6px;
+    }
+
+    table.m-table td {
+      padding: 6px 2px;
+      text-align: center;
+      border-radius: 6px;
+      color: #334155;
+    }
+
+    table.m-table td.header-cell {
+      font-weight: bold;
+      color: #1e293b;
+    }
+
+    /* Quiz Screen Components */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: bold;
+      color: #6c757d;
+    }
+
+    .progress-badge {
+      background: #fff0f3;
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: var(--primary);
+      border: 2px solid #ffccd5;
+      font-size: 0.85rem;
+    }
+
+    .timer-container {
+      width: 100%;
+      background: #f1f3f5;
+      height: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      transition: width 0.1s linear;
+    }
+
+    .question-box {
+      background: #fff5f7;
+      border: 3px dashed #ffb3c1;
+      border-radius: 18px;
+      padding: 20px 10px;
+      margin-bottom: 15px;
+    }
+
+    .question-text {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+      letter-spacing: 2px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.6rem;
+      text-align: center;
+      border: 3px solid #ffccd5;
+      border-radius: 16px;
+      outline: none;
+      background: #fafafa;
+      color: var(--text-color);
+      margin-bottom: 12px;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Score & Results */
+    .score-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #fff0f3;
+      border: 4px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 10px auto;
+    }
+
+    .quote-box {
+      background: #faf5ff;
+      border: 2px dashed #d8b4fe;
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #6b21a8;
+      line-height: 1.3;
+    }
+
+    .analysis-list {
+      max-height: 180px;
+      overflow-y: auto;
+      text-align: left;
+      margin: 12px 0;
+      padding-right: 4px;
+    }
+
+    .analysis-item {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+    }
+
+    .analysis-item.wrong {
+      border-left: 4px solid var(--accent-wrong);
+      background: #fff5f5;
+    }
+
+    .analysis-item.correct {
+      border-left: 4px solid var(--accent-correct);
+      background: #f0fdf4;
+    }
+
+    .badge-ans {
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .wrong-text {
+      color: var(--accent-wrong);
+    }
+
+    .correct-text {
+      color: #16a34a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- 1. HALAMAN PERTAMA: JIGSAW PUZZLE INTERAKTIF -->
+    <div id="welcome-screen" class="screen active">
+      <div style="font-size: 2.2rem; margin-bottom: 2px;">🧩✨</div>
+      <h1>Custom Jigsaw Puzzle</h1>
+      <p class="subtitle">Pasang kepingan puzzle di bawah ini! 🌸</p>
+
+      <!-- Tombol Custom Foto -->
+      <div class="upload-btn-wrapper">
+        <label for="image-upload" class="btn-upload">🖼️ Pilih Foto Galeri / Google</label>
+        <input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+      </div>
+
+      <div class="puzzle-box">
+        <canvas id="jigsaw-canvas" width="320" height="400"></canvas>
+      </div>
+
+      <button class="btn" onclick="goToTablePage()">Lanjut Ke Halaman Berikutnya ➔</button>
+    </div>
+
+    <!-- 2. HALAMAN KEDUA: TABEL PERKALIAN -->
+    <div id="table-screen" class="screen">
+      <div style="font-size: 2.2rem; margin-bottom: 4px;">📊✨</div>
+      <h1>Perkalian Challenge</h1>
+      <p class="subtitle">Hafalkan tabel perkalian 3 - 9 ini dulu ya! 🌸</p>
+
+      <div class="table-card">
+        <h3>Bagan Perkalian 3 - 9 📚</h3>
+        <div class="table-scroll">
+          <table class="m-table" id="multiplication-table">
+            <!-- Diisi otomatis via JS -->
+          </table>
+        </div>
+      </div>
+
+      <button class="btn" onclick="startQuiz()">Mulai Challenge 🚀</button>
+      <button class="btn btn-secondary" onclick="goToHome()">⬅️ Kembali ke Puzzle</button>
+    </div>
+
+    <!-- 3. QUIZ SCREEN -->
+    <div id="quiz-screen" class="screen">
+      <div class="quiz-header">
+        <span class="progress-badge" id="progress-text">Soal 1/10</span>
+        <span id="timer-text" style="color: #ec4899;">⏱️ 10s</span>
+      </div>
+
+      <div class="timer-container">
+        <div class="timer-bar" id="timer-bar"></div>
+      </div>
+
+      <div class="question-box">
+        <div class="question-text" id="question-display">7 × 7</div>
+      </div>
+
+      <form onsubmit="submitAnswer(event)">
+        <input type="number" id="user-input" placeholder="?" autocomplete="off">
+        <button type="submit" class="btn">Jawab 💖</button>
+      </form>
+    </div>
+
+    <!-- 4. RESULT & ANALYSIS SCREEN -->
+    <div id="result-screen" class="screen">
+      <div style="font-size: 2.2rem; margin-bottom: 2px;" id="result-emoji">🎉</div>
+      <h1 id="result-title">Hebat Banget!</h1>
+
+      <div class="score-circle" id="score-display">8/10</div>
+
+      <div class="quote-box" id="quote-display">
+        "Semangat terus belajarnya! ✨"
+      </div>
+
+      <p style="font-weight: bold; margin-bottom: 8px; color: #6c757d; font-size: 0.9rem;">Analisis Jawaban 📝</p>
+
+      <div class="analysis-list" id="analysis-container">
+        <!-- List Analisis dimuat lewat JS -->
+      </div>
+
+      <button class="btn" onclick="startQuiz()">Coba Lagi 🔄</button>
+      <button class="btn btn-secondary" onclick="goToTablePage()">Lihat Tabel Perkalian 📊</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* ========================================================
+       SISTEM JIGSAW PUZZLE (FIX BINTIK/LENGKUNGAN PUTIH)
+    ======================================================== */
+    const canvas = document.getElementById('jigsaw-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const COLS = 3;
+    const ROWS = 2;
+    const CANVAS_WIDTH = 320;
+
+    let BOARD_X = 10;
+    let BOARD_Y = 10;
+    let BOARD_W = 300;
+    let BOARD_H = 200;
+    let PIECE_W = BOARD_W / COLS;
+    let PIECE_H = BOARD_H / ROWS;
+
+    let offscreenCanvas = document.createElement('canvas');
+    let offscreenCtx = offscreenCanvas.getContext('2d');
+
+    let pieces = [];
+    let selectedPiece = null;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+
+    const edgesHorizontal = [
+      [1, -1],
+      [-1, 1]
+    ];
+    const edgesVertical = [
+      [1, -1, 1]
+    ];
+
+    // Gambar Default
+    function createDefaultImage() {
+      const imgCanvas = document.createElement('canvas');
+      imgCanvas.width = 300;
+      imgCanvas.height = 200;
+      const oCtx = imgCanvas.getContext('2d');
+
+      let grad = oCtx.createLinearGradient(0, 0, 300, 200);
+      grad.addColorStop(0, '#ffb3c1');
+      grad.addColorStop(1, '#c084fc');
+      oCtx.fillStyle = grad;
+      oCtx.fillRect(0, 0, 300, 200);
+
+      oCtx.fillStyle = '#ffffff';
+      oCtx.beginPath();
+      oCtx.arc(50, 40, 20, 0, Math.PI * 2);
+      oCtx.arc(75, 35, 25, 0, Math.PI * 2);
+      oCtx.arc(100, 40, 20, 0, Math.PI * 2);
+      oCtx.fill();
+
+      // Beruang Cute
+      oCtx.fillStyle = '#f7d6b8';
+      oCtx.beginPath(); oCtx.arc(125, 90, 16, 0, Math.PI * 2); oCtx.fill();
+      oCtx.beginPath(); oCtx.arc(175, 90, 16, 0, Math.PI * 2); oCtx.fill();
+      oCtx.beginPath(); oCtx.arc(150, 105, 34, 0, Math.PI * 2); oCtx.fill();
+
+      oCtx.fillStyle = '#4a4e69';
+      oCtx.beginPath(); oCtx.arc(138, 100, 4, 0, Math.PI * 2); oCtx.fill();
+      oCtx.beginPath(); oCtx.arc(162, 100, 4, 0, Math.PI * 2); oCtx.fill();
+      oCtx.beginPath(); oCtx.arc(150, 110, 6, 0, Math.PI * 2); oCtx.fill();
+
+      oCtx.fillStyle = '#ffffff';
+      oCtx.font = 'bold 16px sans-serif';
+      oCtx.textAlign = 'center';
+      oCtx.fillText('Have a Nice Day! 🌸', 150, 168);
+
+      let img = new Image();
+      img.src = imgCanvas.toDataURL();
+      img.onload = () => setupPuzzleWithImage(img);
+    }
+
+    // Membaca Upload Foto dari Galeri HP/Google
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+          setupPuzzleWithImage(img);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Mengatur Ukuran Papan tanpa Mengubah Aspect Ratio Foto
+    function setupPuzzleWithImage(img) {
+      const MAX_W = 290;
+      const MAX_H = 360;
+
+      let imgAspect = img.width / img.height;
+      let maxAspect = MAX_W / MAX_H;
+
+      if (imgAspect > maxAspect) {
+        BOARD_W = MAX_W;
+        BOARD_H = Math.round(MAX_W / imgAspect);
+      } else {
+        BOARD_H = MAX_H;
+        BOARD_W = Math.round(MAX_H * imgAspect);
+      }
+
+      BOARD_X = Math.round((CANVAS_WIDTH - BOARD_W) / 2);
+
+      PIECE_W = BOARD_W / COLS;
+      PIECE_H = BOARD_H / ROWS;
+
+      canvas.width = CANVAS_WIDTH;
+      canvas.height = BOARD_Y + BOARD_H + 160;
+
+      offscreenCanvas.width = BOARD_W;
+      offscreenCanvas.height = BOARD_H;
+      offscreenCtx.clearRect(0, 0, BOARD_W, BOARD_H);
+      offscreenCtx.drawImage(img, 0, 0, BOARD_W, BOARD_H);
+
+      initPieces();
+    }
+
+    function buildPiecePath(targetCtx, x, y, top, right, bottom, left) {
+      targetCtx.beginPath();
+      targetCtx.moveTo(x, y);
+
+      drawJigsawEdge(targetCtx, x, y, x + PIECE_W, y, top);
+      drawJigsawEdge(targetCtx, x + PIECE_W, y, x + PIECE_W, y + PIECE_H, right);
+      drawJigsawEdge(targetCtx, x + PIECE_W, y + PIECE_H, x, y + PIECE_H, bottom);
+      drawJigsawEdge(targetCtx, x, y + PIECE_H, x, y, left);
+
+      targetCtx.closePath();
+    }
+
+    function drawJigsawEdge(targetCtx, x1, y1, x2, y2, type) {
+      if (type === 0) {
+        targetCtx.lineTo(x2, y2);
+        return;
+      }
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.sqrt(dx * dx + dy * dy);
+
+      const nx = -dy / len * type;
+      const ny = dx / len * type;
+      const tx = dx / len;
+      const ty = dy / len;
+
+      const p1x = x1 + tx * len * 0.38;
+      const p1y = y1 + ty * len * 0.38;
+      const p2x = x1 + tx * len * 0.62;
+      const p2y = y1 + ty * len * 0.62;
+
+      const cx = x1 + tx * len * 0.5 + nx * len * 0.22;
+      const cy = y1 + ty * len * 0.5 + ny * len * 0.22;
+
+      targetCtx.lineTo(p1x, p1y);
+      targetCtx.bezierCurveTo(
+        p1x + nx * len * 0.1, p1y + ny * len * 0.1,
+        cx - tx * len * 0.15 + nx * len * 0.05, cy - ty * len * 0.15 - ny * len * 0.05,
+        cx, cy
+      );
+      targetCtx.bezierCurveTo(
+        cx + tx * len * 0.15 + nx * len * 0.05, cy + ty * len * 0.15 - ny * len * 0.05,
+        p2x + nx * len * 0.1, p2y + ny * len * 0.1,
+        p2x, p2y
+      );
+      targetCtx.lineTo(x2, y2);
+    }
+
+    function initPieces() {
+      pieces = [];
+      let index = 0;
+      let startScatterY = BOARD_Y + BOARD_H + 15;
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          let top = (r === 0) ? 0 : -edgesVertical[r - 1][c];
+          let bottom = (r === ROWS - 1) ? 0 : edgesVertical[r][c];
+          let left = (c === 0) ? 0 : -edgesHorizontal[r][c - 1];
+          let right = (c === COLS - 1) ? 0 : edgesHorizontal[r][c];
+
+          let targetX = BOARD_X + c * PIECE_W;
+          let targetY = BOARD_Y + r * PIECE_H;
+
+          let scatterColWidth = CANVAS_WIDTH / COLS;
+          let randomX = (index % COLS) * scatterColWidth + 5;
+          let randomY = startScatterY + Math.floor(index / COLS) * (PIECE_H * 0.75);
+
+          pieces.push({
+            id: index,
+            col: c,
+            row: r,
+            top: top,
+            right: right,
+            bottom: bottom,
+            left: left,
+            targetX: targetX,
+            targetY: targetY,
+            x: randomX,
+            y: randomY,
+            isSnapped: false
+          });
+          index++;
+        }
+      }
+      drawCanvas();
+    }
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Papan Target Garis Putus-Putus
+      ctx.strokeStyle = '#ffb3c1';
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 2;
+      ctx.strokeRect(BOARD_X, BOARD_Y, BOARD_W, BOARD_H);
+      ctx.setLineDash([]);
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          ctx.strokeStyle = 'rgba(255, 179, 193, 0.4)';
+          ctx.strokeRect(BOARD_X + c * PIECE_W, BOARD_Y + r * PIECE_H, PIECE_W, PIECE_H);
+        }
+      }
+
+      // 2. Render Kepingan Puzzle
+      pieces.filter(p => p.isSnapped).forEach(p => drawPiece(p));
+      pieces.filter(p => !p.isSnapped && p !== selectedPiece).forEach(p => drawPiece(p));
+
+      if (selectedPiece) {
+        drawPiece(selectedPiece, true);
+      }
+    }
+
+    function drawPiece(p, isDragging = false) {
+      ctx.save();
+
+      buildPiecePath(ctx, p.x, p.y, p.top, p.right, p.bottom, p.left);
+
+      if (isDragging) {
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetY = 4;
+      }
+
+      ctx.clip();
+
+      // Mappings presisi agar lekukan & tonjolan terisi foto penuh tanpa area putih
+      ctx.drawImage(
+        offscreenCanvas,
+        p.x - p.col * PIECE_W,
+        p.y - p.row * PIECE_H,
+        BOARD_W,
+        BOARD_H
+      );
+
+      ctx.restore();
+
+      // Border kepingan
+      ctx.save();
+      buildPiecePath(ctx, p.x, p.y, p.top, p.right, p.bottom, p.left);
+      ctx.lineWidth = p.isSnapped ? 1.5 : 2.5;
+      ctx.strokeStyle = p.isSnapped ? 'rgba(255,255,255,0.9)' : '#ff8fa3';
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function getPointerPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function onPointerDown(e) {
+      const pos = getPointerPos(e);
+
+      for (let i = pieces.length - 1; i >= 0; i--) {
+        let p = pieces[i];
+        if (p.isSnapped) continue;
+
+        if (pos.x >= p.x - 10 && pos.x <= p.x + PIECE_W + 10 &&
+          pos.y >= p.y - 10 && pos.y <= p.y + PIECE_H + 10) {
+          selectedPiece = p;
+          dragOffsetX = pos.x - p.x;
+          dragOffsetY = pos.y - p.y;
+          drawCanvas();
+          break;
+        }
+      }
+    }
+
+    function onPointerMove(e) {
+      if (!selectedPiece) return;
+      e.preventDefault();
+      const pos = getPointerPos(e);
+
+      selectedPiece.x = pos.x - dragOffsetX;
+      selectedPiece.y = pos.y - dragOffsetY;
+      drawCanvas();
+    }
+
+    function onPointerUp() {
+      if (!selectedPiece) return;
+
+      let dist = Math.hypot(selectedPiece.x - selectedPiece.targetX, selectedPiece.y - selectedPiece.targetY);
+      if (dist < 25) {
+        selectedPiece.x = selectedPiece.targetX;
+        selectedPiece.y = selectedPiece.targetY;
+        selectedPiece.isSnapped = true;
+      }
+
+      selectedPiece = null;
+      drawCanvas();
+    }
+
+    canvas.addEventListener('mousedown', onPointerDown);
+    canvas.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    canvas.addEventListener('touchstart', onPointerDown, { passive: false });
+    canvas.addEventListener('touchmove', onPointerMove, { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+
+
+    /* ==========================================================
+       LOGIKA PERKALIAN & QUIZ
+    ========================================================== */
+    const TOTAL_QUESTIONS = 10;
+    const TIME_PER_QUESTION = 10;
+
+    const QUOTES = [
+      "“Latihan membuat perhitunganmu makin cepat dan tepat! 🌟”",
+      "“Matematika itu seperti teka-teki, makin sering berlatih makin seru! 🧩✨”",
+      "“Setiap kesalahan adalah langkah kecil menuju jawaban yang benar! 🌱”",
+      "“Kamu hebat sudah berusaha berhitung sebaik mungkin hari ini! 👏💖”",
+      "“Jangan pernah berhenti berlatih, otakmu semakin jago matematika! 🧠💫”",
+      "“Hebat! Latihan terus agar perkalianmu makin cepat dan akurat! 🚀”",
+      "“Kuasai matematika dasar untuk jadi juara esok hari! ✨👑”"
+    ];
+
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let timer = null;
+    let timeLeft = TIME_PER_QUESTION;
+
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const tableScreen = document.getElementById('table-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const questionDisplay = document.getElementById('question-display');
+    const userInput = document.getElementById('user-input');
+    const progressText = document.getElementById('progress-text');
+    const timerText = document.getElementById('timer-text');
+    const timerBar = document.getElementById('timer-bar');
+    const quoteDisplay = document.getElementById('quote-display');
+
+    function showScreen(screen) {
+      welcomeScreen.classList.remove('active');
+      tableScreen.classList.remove('active');
+      quizScreen.classList.remove('active');
+      resultScreen.classList.remove('active');
+      screen.classList.add('active');
+    }
+
+    function goToHome() { showScreen(welcomeScreen); }
+    function goToTablePage() { showScreen(tableScreen); }
+
+    function renderMultiplicationTable() {
+      const table = document.getElementById('multiplication-table');
+      const rowColors = ['#dbeafe', '#ccfbf1', '#dcfce7', '#fef9c3', '#ffedd5', '#ffe4e6', '#f3e8ff'];
+
+      let html = '<thead><tr><th>×</th>';
+      for (let col = 3; col <= 9; col++) html += `<th>${col}</th>`;
+      html += '</tr></thead><tbody>';
+
+      for (let row = 3; row <= 9; row++) {
+        const bg = rowColors[row - 3];
+        html += `<tr><td class="header-cell" style="background:${bg}; font-weight:bold;">${row}</td>`;
+        for (let col = 3; col <= 9; col++) {
+          html += `<td style="background:${bg};">${row * col}</td>`;
+        }
+        html += '</tr>';
+      }
+      html += '</tbody>';
+      table.innerHTML = html;
+    }
+
+    function getRandomNumber() {
+      return Math.floor(Math.random() * 7) + 3;
+    }
+
+    function generateQuestions() {
+      questions = [];
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const num1 = getRandomNumber();
+        const num2 = getRandomNumber();
+        questions.push({ num1: num1, num2: num2, answer: num1 * num2 });
+      }
+    }
+
+    function startQuiz() {
+      generateQuestions();
+      currentQuestionIndex = 0;
+      userAnswers = [];
+      showScreen(quizScreen);
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      if (currentQuestionIndex >= TOTAL_QUESTIONS) {
+        showResults();
+        return;
+      }
+
+      const q = questions[currentQuestionIndex];
+      questionDisplay.textContent = `${q.num1} × ${q.num2}`;
+      progressText.textContent = `Soal ${currentQuestionIndex + 1}/${TOTAL_QUESTIONS}`;
+      userInput.value = '';
+      userInput.focus();
+
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timeLeft = TIME_PER_QUESTION;
+      updateTimerUI();
+
+      timer = setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          recordAnswer(null);
+        } else {
+          updateTimerUI();
+        }
+      }, 100);
+    }
+
+    function updateTimerUI() {
+      const percentage = (timeLeft / TIME_PER_QUESTION) * 100;
+      timerBar.style.width = `${Math.max(0, percentage)}%`;
+      timerText.textContent = `⏱️ ${Math.ceil(timeLeft)}s`;
+    }
+
+    function submitAnswer(e) {
+      e.preventDefault();
+      clearInterval(timer);
+
+      const val = userInput.value.trim();
+      const numVal = val === '' ? null : parseInt(val, 10);
+      recordAnswer(numVal);
+    }
+
+    function recordAnswer(ans) {
+      const q = questions[currentQuestionIndex];
+      userAnswers.push({
+        question: `${q.num1} × ${q.num2}`,
+        correctAnswer: q.answer,
+        userAnswer: ans,
+        isCorrect: ans === q.answer
+      });
+
+      currentQuestionIndex++;
+      loadQuestion();
+    }
+
+    function showResults() {
+      showScreen(resultScreen);
+
+      let correctCount = userAnswers.filter(a => a.isCorrect).length;
+      document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
+
+      const emojiEl = document.getElementById('result-emoji');
+      const titleEl = document.getElementById('result-title');
+
+      if (correctCount === 10) {
+        emojiEl.textContent = '👑';
+        titleEl.textContent = 'Sempurna! 100%';
+      } else if (correctCount >= 7) {
+        emojiEl.textContent = '🍓';
+        titleEl.textContent = 'Hebat Banget!';
+      } else {
+        emojiEl.textContent = '🌱';
+        titleEl.textContent = 'Ayo Latihan Lagi!';
+      }
+
+      const randomQuoteIndex = Math.floor(Math.random() * QUOTES.length);
+      quoteDisplay.textContent = QUOTES[randomQuoteIndex];
+
+      const container = document.getElementById('analysis-container');
+      container.innerHTML = '';
+
+      userAnswers.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = `analysis-item ${item.isCorrect ? 'correct' : 'wrong'}`;
+
+        let userText = item.userAnswer === null ? 'Waktu habis ⏱️' : item.userAnswer;
+
+        if (item.isCorrect) {
+          div.innerHTML = `
+            <div>
+              <strong>${index + 1}. ${item.question} = ${item.correctAnswer}</strong>
+            </div>
+            <span class="badge-ans correct-text">Benar ✨</span>
+          `;
+        } else {
+          div.innerHTML = `
+            <div>
+              <strong>${index + 1}. ${item.question}</strong><br>
+              <small>Kamu: <span class="wrong-text">${userText}</span> | Harusnya: <span class="correct-text">${item.correctAnswer}</span></small>
+            </div>
+            <span class="badge-ans wrong-text">Salah ❌</span>
+          `;
+        }
+        container.appendChild(div);
+      });
+    }
+
+    window.onload = function () {
+      createDefaultImage();
+      renderMultiplicationTable();
+    };
+  </script>
+</body>
+
+</html>
