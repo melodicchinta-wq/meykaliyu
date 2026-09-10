@@ -3,313 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Jigsaw & Math Playground 🧩🔢</title>
+  <title>Cyber Jigsaw & Math Arena ⚡</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
     :root {
-      --bg-color: #ffeef2;
-      --card-bg: #ffffff;
-      --primary: #ff8fa3;
-      --primary-hover: #ff758f;
-      --secondary: #c084fc;
-      --secondary-hover: #a855f7;
-      --text-color: #4a4e69;
-      --accent-correct: #4ade80;
-      --accent-wrong: #f87171;
+      --bg-dark: #0a050e;
+      --card-bg: rgba(22, 11, 31, 0.7);
+      --card-border: rgba(255, 0, 85, 0.25);
+      --primary-gradient: linear-gradient(135deg, #ff0055 0%, #ff5000 100%);
+      --accent-purple: #9d4edd;
+      --accent-neon: #ff0055;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --correct: #10b981;
+      --wrong: #ff0055;
     }
 
     * {
       box-sizing: border-box;
-      font-family: 'Fredoka', 'Quicksand', 'Comic Sans MS', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       margin: 0;
       padding: 0;
     }
 
     body {
-      background: linear-gradient(135deg, #ffe5ec 0%, #f3d5ff 100%);
+      background: #060209;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 0, 85, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(157, 78, 221, 0.15) 0%, transparent 40%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 12px;
-      color: var(--text-color);
+      padding: 16px;
+      color: var(--text-main);
     }
 
+    /* Container Glassmorphism */
     .container {
       background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       width: 100%;
-      max-width: 400px;
-      border-radius: 24px;
-      padding: 18px 14px;
-      box-shadow: 0 15px 35px rgba(255, 143, 163, 0.25);
-      border: 4px solid #fff;
+      max-width: 420px;
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--card-border);
       text-align: center;
       position: relative;
+      overflow: hidden;
+    }
+
+    /* Glowing Blob Effect in Background */
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 180px;
+      background: var(--primary-gradient);
+      filter: blur(90px);
+      opacity: 0.35;
+      z-index: -1;
     }
 
     h1 {
-      color: var(--primary);
-      font-size: 1.6rem;
+      font-size: 1.8rem;
+      font-weight: 800;
       margin-bottom: 4px;
+      background: linear-gradient(135deg, #ffffff 30%, #ff5000 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
     p.subtitle {
       font-size: 0.85rem;
-      color: #8d99ae;
-      margin-bottom: 10px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
     }
 
     .upload-btn-wrapper {
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .btn-upload {
-      background: #f0abfc;
-      color: white;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
       padding: 10px 18px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 12px;
       cursor: pointer;
       display: inline-block;
-      box-shadow: 0 4px 12px rgba(240, 171, 252, 0.4);
       transition: all 0.2s;
-      border: 2px solid #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
     }
 
-    .btn-upload:active {
-      transform: scale(0.95);
+    .btn-upload:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
+    /* Modern Buttons */
     .btn {
-      background: var(--primary);
-      color: white;
+      background: var(--primary-gradient);
+      color: #fff;
       border: none;
-      padding: 12px 20px;
+      padding: 14px 20px;
       font-size: 1rem;
-      font-weight: bold;
-      border-radius: 50px;
+      font-weight: 700;
+      border-radius: 16px;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
-      transition: transform 0.1s, background 0.2s;
+      box-shadow: 0 10px 20px rgba(255, 0, 85, 0.35);
+      transition: all 0.2s ease;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
     }
 
-    .btn-secondary {
-      background: var(--secondary);
-      box-shadow: 0 5px 15px rgba(192, 132, 252, 0.4);
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 26px rgba(255, 0, 85, 0.45);
     }
 
     .btn:active {
-      transform: scale(0.96);
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
     }
 
     .screen { display: none; }
-    .screen.active { display: block; }
+    .screen.active { 
+      display: block; 
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Jigsaw Card Canvas Frame */
     .puzzle-box {
-      background: #fff0f3;
-      border: 3px dashed #ffccd5;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
     }
 
     #jigsaw-canvas {
       display: block;
       margin: 0 auto;
-      border-radius: 10px;
+      border-radius: 12px;
       touch-action: none;
       cursor: grab;
-      background: #ffffff;
     }
 
-    #jigsaw-canvas:active {
-      cursor: grabbing;
-    }
-
-    .table-card {
-      background: #fff5f7;
-      border: 3px dashed #ffccd5;
-      border-radius: 20px;
-      padding: 10px 6px;
-      margin-bottom: 12px;
-    }
-
-    .table-card h3 {
-      font-size: 0.95rem;
-      color: var(--primary);
-      margin-bottom: 6px;
-    }
-
-    .table-scroll {
-      overflow-x: auto;
-      border-radius: 12px;
-    }
-
-    table.m-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 3px;
-      font-size: 0.8rem;
-      font-weight: bold;
-    }
-
-    table.m-table th {
-      background: #c084fc;
-      color: white;
-      padding: 6px 2px;
-      border-radius: 6px;
-    }
-
-    table.m-table td {
-      padding: 6px 2px;
-      text-align: center;
-      border-radius: 6px;
-      color: #334155;
-    }
-
-    table.m-table td.header-cell {
-      font-weight: bold;
-      color: #1e293b;
-    }
-
-    .setting-card {
-      background: #fdf2f8;
-      border: 2px solid #fbcfe8;
-      border-radius: 16px;
-      padding: 10px;
-      margin-bottom: 12px;
+    /* Cards / Glass Panels */
+    .setting-card, .table-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
       text-align: left;
     }
 
     .setting-card label {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #831843;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
     }
 
     .setting-card select, .setting-card input[type="number"] {
       width: 100%;
-      padding: 8px;
-      border-radius: 10px;
-      border: 2px solid #f472b6;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 0.9rem;
       outline: none;
-      margin-bottom: 8px;
-      background: #fff;
+      margin-bottom: 12px;
+      background: rgba(15, 7, 24, 0.8);
+      color: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .setting-card select:focus, .setting-card input:focus {
+      border-color: var(--accent-neon);
     }
 
     .range-group {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
 
+    /* Quiz Screen Styles */
     .quiz-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      font-weight: bold;
-      color: #6c757d;
+      margin-bottom: 14px;
+      font-weight: 600;
     }
 
     .progress-badge {
-      background: #fff0f3;
-      padding: 4px 12px;
+      background: rgba(255, 0, 85, 0.15);
+      padding: 6px 14px;
       border-radius: 20px;
-      color: var(--primary);
-      border: 2px solid #ffccd5;
-      font-size: 0.85rem;
+      color: #ff5079;
+      border: 1px solid rgba(255, 0, 85, 0.3);
+      font-size: 0.8rem;
     }
 
     .timer-container {
       width: 100%;
-      background: #f1f3f5;
-      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      height: 8px;
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .timer-bar {
       height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #a855f7, #ec4899);
+      background: var(--primary-gradient);
+      box-shadow: 0 0 12px rgba(255, 0, 85, 0.8);
       transition: width 0.1s linear;
     }
 
     .question-box {
-      background: #fff5f7;
-      border: 3px dashed #ffb3c1;
-      border-radius: 18px;
-      padding: 20px 10px;
-      margin-bottom: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
     .question-text {
       font-size: 2.5rem;
-      font-weight: bold;
-      color: var(--text-color);
-      letter-spacing: 2px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #ffffff, #ff7597);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .quiz-input {
       width: 100%;
-      padding: 10px;
-      font-size: 1.6rem;
+      padding: 12px;
+      font-size: 1.8rem;
+      font-weight: 700;
       text-align: center;
-      border: 3px solid #ffccd5;
+      border: 2px solid rgba(255, 255, 255, 0.15);
       border-radius: 16px;
       outline: none;
-      background: #fafafa;
-      color: var(--text-color);
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
       margin-bottom: 12px;
+      transition: all 0.2s;
     }
 
     .quiz-input:focus {
-      border-color: var(--primary);
-      background: #fff;
+      border-color: #ff0055;
+      box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
     }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
+    /* Results */
     .score-circle {
-      width: 90px;
-      height: 90px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      background: #fff0f3;
-      border: 4px solid var(--primary);
+      background: rgba(0, 0, 0, 0.4);
+      border: 3px solid #ff0055;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--primary);
-      margin: 10px auto;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 16px auto;
+      box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
     }
 
     .quote-box {
-      background: #faf5ff;
-      border: 2px dashed #d8b4fe;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px rgba(255, 255, 255, 0.1) dashed;
       border-radius: 14px;
-      padding: 10px 12px;
-      margin: 12px 0;
+      padding: 12px;
+      margin: 14px 0;
       font-size: 0.85rem;
+      color: var(--text-muted);
       font-style: italic;
-      color: #6b21a8;
-      line-height: 1.3;
     }
 
     .analysis-list {
-      max-height: 180px;
+      max-height: 170px;
       overflow-y: auto;
       text-align: left;
       margin: 12px 0;
@@ -317,119 +331,109 @@
     }
 
     .analysis-item {
-      background: #f8f9fa;
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 10px;
-      padding: 8px 12px;
+      padding: 10px 12px;
       margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
+      border-left: 4px solid var(--text-muted);
     }
 
-    .analysis-item.wrong {
-      border-left: 4px solid var(--accent-wrong);
-      background: #fff5f5;
-    }
+    .analysis-item.wrong { border-left-color: var(--wrong); }
+    .analysis-item.correct { border-left-color: var(--correct); }
 
-    .analysis-item.correct {
-      border-left: 4px solid var(--accent-correct);
-      background: #f0fdf4;
-    }
+    /* Custom Table Style */
+    .table-scroll { overflow-x: auto; border-radius: 10px; }
+    table.m-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+    table.m-table th, table.m-table td { padding: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+    table.m-table th { background: rgba(255,0,85,0.2); color: #fff; }
+    table.m-table td { background: rgba(0,0,0,0.2); }
 
-    .badge-ans { font-weight: bold; font-size: 0.85rem; }
-    .wrong-text { color: var(--accent-wrong); }
-    .correct-text { color: #16a34a; }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+      -webkit-appearance: none; margin: 0;
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     
-    <!-- 1. HALAMAN PERTAMA: JIGSAW PUZZLE INTERAKTIF -->
+    <!-- 1. HALAMAN PUZZLE -->
     <div id="welcome-screen" class="screen active">
-      <div style="font-size: 2.2rem; margin-bottom: 2px;">🧩✨</div>
-      <h1>Custom Jigsaw Puzzle</h1>
-      <p class="subtitle">Pasang kepingan puzzle di bawah ini! 🌸</p>
+      <div style="font-size: 2.2rem; margin-bottom: 2px;">🎮</div>
+      <h1>Jigsaw Arena</h1>
+      <p class="subtitle">Selesaikan puzzle untuk membuka arena!</p>
 
       <div class="upload-btn-wrapper">
-        <label for="image-upload" class="btn-upload">🖼️ Pilih Foto Galeri / Google</label>
+        <label for="image-upload" class="btn-upload">📷 Unggah Foto Sendiri</label>
         <input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
       </div>
 
       <div class="puzzle-box">
-        <canvas id="jigsaw-canvas" width="320" height="400"></canvas>
+        <canvas id="jigsaw-canvas" width="320" height="380"></canvas>
       </div>
 
-      <button class="btn" onclick="goToTablePage()">Lanjut Ke Halaman Berikutnya ➔</button>
+      <button class="btn" onclick="goToTablePage()">Mulai Game ➔</button>
     </div>
 
-    <!-- 2. HALAMAN KEDUA: TABEL & SETTING MATEMATIKA -->
+    <!-- 2. HALAMAN PENGATURAN MODE MATH -->
     <div id="table-screen" class="screen">
-      <div style="font-size: 2.2rem; margin-bottom: 4px;">🔢✨</div>
-      <h1 id="page-title">Math Challenge</h1>
-      <p class="subtitle">Pilih operasi dan latihan pilihanmu! 🌸</p>
+      <div style="font-size: 2rem; margin-bottom: 4px;">⚡</div>
+      <h1 id="page-title">Math Arena</h1>
+      <p class="subtitle">Atur tingkat kesulitan tantanganmu</p>
 
-      <!-- Panel Pengaturan Matematika -->
       <div class="setting-card">
-        <label for="op-select">🧮 Operasi Matematika:</label>
+        <label for="op-select" id="op-label">Operasi Matematika</label>
         <select id="op-select" onchange="onOpChange()">
-          <option value="multiplication" selected>✖️ Perkalian</option>
-          <option value="division">➗ Pembagian</option>
+          <option value="multiplication" selected>Perkalian (×)</option>
+          <option value="division">Pembagian (÷)</option>
         </select>
 
-        <label for="mode-select">⚙️ Mode Soal:</label>
+        <label for="mode-select">Mode Permainan</label>
         <select id="mode-select" onchange="toggleModeUI()">
-          <option value="single">Angka Spesifik</option>
-          <option value="random" selected>Random / Acak (Campur)</option>
+          <option value="single">Angka Spesifik (2 Angka)</option>
+          <option value="random" selected>Acak Standard (2 Angka)</option>
+          <option value="complex">🔥 Campuran Kompleks (3 Angka)</option>
         </select>
 
-        <!-- Pilihan Spesifik -->
         <div id="single-mode-ui" style="display: none;">
-          <label id="specific-label" for="specific-num">Fokus Angka Berapa?</label>
+          <label id="specific-label" for="specific-num">Fokus Pada Angka</label>
           <select id="specific-num">
-            <option value="1">Angka 1</option>
-            <option value="2">Angka 2</option>
-            <option value="3">Angka 3</option>
-            <option value="4">Angka 4</option>
-            <option value="5">Angka 5</option>
-            <option value="6">Angka 6</option>
-            <option value="7" selected>Angka 7</option>
-            <option value="8">Angka 8</option>
-            <option value="9">Angka 9</option>
-            <option value="10">Angka 10</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7" selected>7</option><option value="8">8</option><option value="9">9</option>
           </select>
         </div>
 
-        <!-- Pilihan Mode Random -->
         <div id="random-mode-ui">
-          <label>Rentang Angka Random:</label>
+          <label>Rentang Angka Acak</label>
           <div class="range-group">
             <input type="number" id="min-num" value="3" min="1" max="12">
-            <span style="font-size: 0.85rem; font-weight: bold;">sampai</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">s/d</span>
             <input type="number" id="max-num" value="9" min="1" max="12">
           </div>
         </div>
       </div>
 
-      <div class="table-card">
-        <h3 id="table-title">Bagan Matematika 📚</h3>
+      <div class="table-card" id="table-card-container">
+        <h3 id="table-title" style="font-size: 0.9rem; margin-bottom: 8px; color: var(--text-muted);">Bagan Referensi 📚</h3>
         <div class="table-scroll">
-          <table class="m-table" id="math-table">
-            <!-- Diisi otomatis via JS -->
-          </table>
+          <table class="m-table" id="math-table"></table>
         </div>
       </div>
 
-      <button class="btn" onclick="startQuiz()">Mulai Challenge 🚀</button>
+      <button class="btn" onclick="startQuiz()">Lanjut Ke Tantangan ⚡</button>
       <button class="btn btn-secondary" onclick="goToHome()">⬅️ Kembali ke Puzzle</button>
     </div>
 
-    <!-- 3. QUIZ SCREEN -->
+    <!-- 3. HALAMAN QUIZ -->
     <div id="quiz-screen" class="screen">
       <div class="quiz-header">
         <span class="progress-badge" id="progress-text">Soal 1/10</span>
-        <span id="timer-text" style="color: #ec4899;">⏱️ 10s</span>
+        <span id="timer-text" style="color: #ff5079; font-size: 0.9rem;">⏱️ 10s</span>
       </div>
 
       <div class="timer-container">
@@ -442,91 +446,59 @@
 
       <form onsubmit="submitAnswer(event)">
         <input type="number" id="user-input" class="quiz-input" placeholder="?" autocomplete="off">
-        <button type="submit" class="btn">Jawab 💖</button>
+        <button type="submit" class="btn">Jawab ⚡</button>
       </form>
     </div>
 
-    <!-- 4. RESULT & ANALYSIS SCREEN -->
+    <!-- 4. RESULT SCREEN -->
     <div id="result-screen" class="screen">
       <div style="font-size: 2.2rem; margin-bottom: 2px;" id="result-emoji">🎉</div>
-      <h1 id="result-title">Hebat Banget!</h1>
+      <h1 id="result-title">Hasil Akhir</h1>
       
       <div class="score-circle" id="score-display">8/10</div>
 
-      <div class="quote-box" id="quote-display">
-        "Semangat terus belajarnya! ✨"
-      </div>
+      <div class="quote-box" id="quote-display">"Kerja bagus! Asah terus kecepatan otakmu!"</div>
 
-      <p style="font-weight: bold; margin-bottom: 8px; color: #6c757d; font-size: 0.9rem;">Analisis Jawaban 📝</p>
+      <p style="font-weight: 600; margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem;">Analisis Jawaban 📝</p>
       
       <div class="analysis-list" id="analysis-container"></div>
 
       <button class="btn" onclick="startQuiz()">Coba Lagi 🔄</button>
-      <button class="btn btn-secondary" onclick="goToTablePage()">Atur Ulang Pengaturan 📊</button>
+      <button class="btn btn-secondary" onclick="goToTablePage()">Pengaturan 📊</button>
     </div>
 
   </div>
 
   <script>
-    /* SISTEM JIGSAW PUZZLE */
+    /* PUZZLE ENGINE */
     const canvas = document.getElementById('jigsaw-canvas');
     const ctx = canvas.getContext('2d');
-
-    const COLS = 3;
-    const ROWS = 2;
-    const CANVAS_WIDTH = 320;
-    
-    let BOARD_X = 10;
-    let BOARD_Y = 10;
-    let BOARD_W = 300;
-    let BOARD_H = 200;
-    let PIECE_W = BOARD_W / COLS;
-    let PIECE_H = BOARD_H / ROWS;
+    const COLS = 3, ROWS = 2, CANVAS_WIDTH = 320;
+    let BOARD_X = 10, BOARD_Y = 10, BOARD_W = 300, BOARD_H = 200;
+    let PIECE_W = BOARD_W / COLS, PIECE_H = BOARD_H / ROWS;
 
     let offscreenCanvas = document.createElement('canvas');
     let offscreenCtx = offscreenCanvas.getContext('2d');
-
-    let pieces = [];
-    let selectedPiece = null;
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
+    let pieces = [], selectedPiece = null, dragOffsetX = 0, dragOffsetY = 0;
 
     const edgesHorizontal = [[1, -1], [-1, 1]];
     const edgesVertical = [[1, -1, 1]];
 
     function createDefaultImage() {
       const imgCanvas = document.createElement('canvas');
-      imgCanvas.width = 300;
-      imgCanvas.height = 200;
+      imgCanvas.width = 300; imgCanvas.height = 200;
       const oCtx = imgCanvas.getContext('2d');
 
       let grad = oCtx.createLinearGradient(0, 0, 300, 200);
-      grad.addColorStop(0, '#ffb3c1');
-      grad.addColorStop(1, '#c084fc');
+      grad.addColorStop(0, '#ff0055');
+      grad.addColorStop(1, '#7928ca');
       oCtx.fillStyle = grad;
       oCtx.fillRect(0, 0, 300, 200);
 
       oCtx.fillStyle = '#ffffff';
-      oCtx.beginPath();
-      oCtx.arc(50, 40, 20, 0, Math.PI * 2);
-      oCtx.arc(75, 35, 25, 0, Math.PI * 2);
-      oCtx.arc(100, 40, 20, 0, Math.PI * 2);
-      oCtx.fill();
-
-      oCtx.fillStyle = '#f7d6b8';
-      oCtx.beginPath(); oCtx.arc(125, 90, 16, 0, Math.PI*2); oCtx.fill();
-      oCtx.beginPath(); oCtx.arc(175, 90, 16, 0, Math.PI*2); oCtx.fill();
-      oCtx.beginPath(); oCtx.arc(150, 105, 34, 0, Math.PI*2); oCtx.fill();
-
-      oCtx.fillStyle = '#4a4e69';
-      oCtx.beginPath(); oCtx.arc(138, 100, 4, 0, Math.PI*2); oCtx.fill();
-      oCtx.beginPath(); oCtx.arc(162, 100, 4, 0, Math.PI*2); oCtx.fill();
-      oCtx.beginPath(); oCtx.arc(150, 110, 6, 0, Math.PI*2); oCtx.fill();
-
-      oCtx.fillStyle = '#ffffff';
-      oCtx.font = 'bold 16px sans-serif';
+      oCtx.font = 'bold 32px Plus Jakarta Sans';
       oCtx.textAlign = 'center';
-      oCtx.fillText('Have a Nice Day! 🌸', 150, 168);
+      oCtx.fillText('ARENA MATH', 150, 105);
 
       let img = new Image();
       img.src = imgCanvas.toDataURL();
@@ -536,7 +508,6 @@
     function handleImageUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = function(event) {
         const img = new Image();
@@ -547,29 +518,22 @@
     }
 
     function setupPuzzleWithImage(img) {
-      const MAX_W = 290;
-      const MAX_H = 360;
-
-      let imgAspect = img.width / img.height;
-      let maxAspect = MAX_W / MAX_H;
+      const MAX_W = 290, MAX_H = 340;
+      let imgAspect = img.width / img.height, maxAspect = MAX_W / MAX_H;
 
       if (imgAspect > maxAspect) {
-        BOARD_W = MAX_W;
-        BOARD_H = Math.round(MAX_W / imgAspect);
+        BOARD_W = MAX_W; BOARD_H = Math.round(MAX_W / imgAspect);
       } else {
-        BOARD_H = MAX_H;
-        BOARD_W = Math.round(MAX_H * imgAspect);
+        BOARD_H = MAX_H; BOARD_W = Math.round(MAX_H * imgAspect);
       }
 
       BOARD_X = Math.round((CANVAS_WIDTH - BOARD_W) / 2);
-      PIECE_W = BOARD_W / COLS;
-      PIECE_H = BOARD_H / ROWS;
+      PIECE_W = BOARD_W / COLS; PIECE_H = BOARD_H / ROWS;
 
       canvas.width = CANVAS_WIDTH;
-      canvas.height = BOARD_Y + BOARD_H + 160;
+      canvas.height = BOARD_Y + BOARD_H + 150;
 
-      offscreenCanvas.width = BOARD_W;
-      offscreenCanvas.height = BOARD_H;
+      offscreenCanvas.width = BOARD_W; offscreenCanvas.height = BOARD_H;
       offscreenCtx.clearRect(0, 0, BOARD_W, BOARD_H);
       offscreenCtx.drawImage(img, 0, 0, BOARD_W, BOARD_H);
 
@@ -579,56 +543,31 @@
     function buildPiecePath(targetCtx, x, y, top, right, bottom, left) {
       targetCtx.beginPath();
       targetCtx.moveTo(x, y);
-
       drawJigsawEdge(targetCtx, x, y, x + PIECE_W, y, top);
       drawJigsawEdge(targetCtx, x + PIECE_W, y, x + PIECE_W, y + PIECE_H, right);
       drawJigsawEdge(targetCtx, x + PIECE_W, y + PIECE_H, x, y + PIECE_H, bottom);
       drawJigsawEdge(targetCtx, x, y + PIECE_H, x, y, left);
-
       targetCtx.closePath();
     }
 
     function drawJigsawEdge(targetCtx, x1, y1, x2, y2, type) {
-      if (type === 0) {
-        targetCtx.lineTo(x2, y2);
-        return;
-      }
-
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      const len = Math.sqrt(dx * dx + dy * dy);
-
-      const nx = -dy / len * type;
-      const ny = dx / len * type;
-      const tx = dx / len;
-      const ty = dy / len;
-
-      const p1x = x1 + tx * len * 0.38;
-      const p1y = y1 + ty * len * 0.38;
-      const p2x = x1 + tx * len * 0.62;
-      const p2y = y1 + ty * len * 0.62;
-
-      const cx = x1 + tx * len * 0.5 + nx * len * 0.22;
-      const cy = y1 + ty * len * 0.5 + ny * len * 0.22;
+      if (type === 0) { targetCtx.lineTo(x2, y2); return; }
+      const dx = x2 - x1, dy = y2 - y1, len = Math.sqrt(dx * dx + dy * dy);
+      const nx = -dy / len * type, ny = dx / len * type;
+      const tx = dx / len, ty = dy / len;
+      const p1x = x1 + tx * len * 0.38, p1y = y1 + ty * len * 0.38;
+      const p2x = x1 + tx * len * 0.62, p2y = y1 + ty * len * 0.62;
+      const cx = x1 + tx * len * 0.5 + nx * len * 0.22, cy = y1 + ty * len * 0.5 + ny * len * 0.22;
 
       targetCtx.lineTo(p1x, p1y);
-      targetCtx.bezierCurveTo(
-        p1x + nx * len * 0.1, p1y + ny * len * 0.1,
-        cx - tx * len * 0.15 + nx * len * 0.05, cy - ty * len * 0.15 - ny * len * 0.05,
-        cx, cy
-      );
-      targetCtx.bezierCurveTo(
-        cx + tx * len * 0.15 + nx * len * 0.05, cy + ty * len * 0.15 - ny * len * 0.05,
-        p2x + nx * len * 0.1, p2y + ny * len * 0.1,
-        p2x, p2y
-      );
+      targetCtx.bezierCurveTo(p1x + nx * len * 0.1, p1y + ny * len * 0.1, cx - tx * len * 0.15 + nx * len * 0.05, cy - ty * len * 0.15 - ny * len * 0.05, cx, cy);
+      targetCtx.bezierCurveTo(cx + tx * len * 0.15 + nx * len * 0.05, cy + ty * len * 0.15 - ny * len * 0.05, p2x + nx * len * 0.1, p2y + ny * len * 0.1, p2x, p2y);
       targetCtx.lineTo(x2, y2);
     }
 
     function initPieces() {
       pieces = [];
-      let index = 0;
-      let startScatterY = BOARD_Y + BOARD_H + 15;
+      let index = 0, startScatterY = BOARD_Y + BOARD_H + 15;
 
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
@@ -637,18 +576,14 @@
           let left = (c === 0) ? 0 : -edgesHorizontal[r][c - 1];
           let right = (c === COLS - 1) ? 0 : edgesHorizontal[r][c];
 
-          let targetX = BOARD_X + c * PIECE_W;
-          let targetY = BOARD_Y + r * PIECE_H;
-
+          let targetX = BOARD_X + c * PIECE_W, targetY = BOARD_Y + r * PIECE_H;
           let scatterColWidth = CANVAS_WIDTH / COLS;
           let randomX = (index % COLS) * scatterColWidth + 5;
           let randomY = startScatterY + Math.floor(index / COLS) * (PIECE_H * 0.75);
 
           pieces.push({
-            id: index, col: c, row: r,
-            top: top, right: right, bottom: bottom, left: left,
-            targetX: targetX, targetY: targetY,
-            x: randomX, y: randomY, isSnapped: false
+            id: index, col: c, row: r, top: top, right: right, bottom: bottom, left: left,
+            targetX: targetX, targetY: targetY, x: randomX, y: randomY, isSnapped: false
           });
           index++;
         }
@@ -658,46 +593,31 @@
 
     function drawCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      ctx.strokeStyle = '#ffb3c1';
-      ctx.setLineDash([5, 5]);
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.setLineDash([4, 4]);
       ctx.strokeRect(BOARD_X, BOARD_Y, BOARD_W, BOARD_H);
       ctx.setLineDash([]);
 
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          ctx.strokeStyle = 'rgba(255, 179, 193, 0.4)';
-          ctx.strokeRect(BOARD_X + c * PIECE_W, BOARD_Y + r * PIECE_H, PIECE_W, PIECE_H);
-        }
-      }
-
       pieces.filter(p => p.isSnapped).forEach(p => drawPiece(p));
       pieces.filter(p => !p.isSnapped && p !== selectedPiece).forEach(p => drawPiece(p));
-
-      if (selectedPiece) {
-        drawPiece(selectedPiece, true);
-      }
+      if (selectedPiece) drawPiece(selectedPiece, true);
     }
 
     function drawPiece(p, isDragging = false) {
       ctx.save();
       buildPiecePath(ctx, p.x, p.y, p.top, p.right, p.bottom, p.left);
-
       if (isDragging) {
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetY = 4;
+        ctx.shadowColor = 'rgba(255, 0, 85, 0.8)';
+        ctx.shadowBlur = 12;
       }
-
       ctx.clip();
       ctx.drawImage(offscreenCanvas, p.x - p.col * PIECE_W, p.y - p.row * PIECE_H, BOARD_W, BOARD_H);
       ctx.restore();
 
       ctx.save();
       buildPiecePath(ctx, p.x, p.y, p.top, p.right, p.bottom, p.left);
-      ctx.lineWidth = p.isSnapped ? 1.5 : 2.5;
-      ctx.strokeStyle = p.isSnapped ? 'rgba(255,255,255,0.9)' : '#ff8fa3';
+      ctx.lineWidth = p.isSnapped ? 1.5 : 2;
+      ctx.strokeStyle = p.isSnapped ? '#10b981' : '#ff0055';
       ctx.stroke();
       ctx.restore();
     }
@@ -714,12 +634,9 @@
       for (let i = pieces.length - 1; i >= 0; i--) {
         let p = pieces[i];
         if (p.isSnapped) continue;
-
-        if (pos.x >= p.x - 10 && pos.x <= p.x + PIECE_W + 10 &&
-            pos.y >= p.y - 10 && pos.y <= p.y + PIECE_H + 10) {
+        if (pos.x >= p.x - 10 && pos.x <= p.x + PIECE_W + 10 && pos.y >= p.y - 10 && pos.y <= p.y + PIECE_H + 10) {
           selectedPiece = p;
-          dragOffsetX = pos.x - p.x;
-          dragOffsetY = pos.y - p.y;
+          dragOffsetX = pos.x - p.x; dragOffsetY = pos.y - p.y;
           drawCanvas();
           break;
         }
@@ -750,30 +667,15 @@
     canvas.addEventListener('mousedown', onPointerDown);
     canvas.addEventListener('mousemove', onPointerMove);
     window.addEventListener('mouseup', onPointerUp);
-
     canvas.addEventListener('touchstart', onPointerDown, { passive: false });
     canvas.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
-    /* LOGIKA PERKALIAN, PEMBAGIAN & QUIZ */
-    const TOTAL_QUESTIONS = 10;
-    const TIME_PER_QUESTION = 10;
+    /* LOGIKA MATH GAME */
+    const TOTAL_QUESTIONS = 10, TIME_PER_QUESTION = 10;
+    const QUOTES = ["“Pertahankan fokusmu, hasil yang baik butuh latihan!”", "“Kecepatan dan ketepatan adalah kuncinya!”"];
 
-    const QUOTES = [
-      "“Latihan membuat perhitunganmu makin cepat dan tepat! 🌟”",
-      "“Matematika itu seperti teka-teki, makin sering berlatih makin seru! 🧩✨”",
-      "“Setiap kesalahan adalah langkah kecil menuju jawaban yang benar! 🌱”",
-      "“Kamu hebat sudah berusaha berhitung sebaik mungkin hari ini! 👏💖”",
-      "“Jangan pernah berhenti berlatih, otakmu semakin jago matematika! 🧠💫”",
-      "“Hebat! Latihan terus agar matematika makin lancar! 🚀”",
-      "“Kuasai matematika dasar untuk jadi juara esok hari! ✨👑”"
-    ];
-
-    let questions = [];
-    let currentQuestionIndex = 0;
-    let userAnswers = [];
-    let timer = null;
-    let timeLeft = TIME_PER_QUESTION;
+    let questions = [], currentQuestionIndex = 0, userAnswers = [], timer = null, timeLeft = TIME_PER_QUESTION;
 
     const welcomeScreen = document.getElementById('welcome-screen');
     const tableScreen = document.getElementById('table-screen');
@@ -784,13 +686,9 @@
     const progressText = document.getElementById('progress-text');
     const timerText = document.getElementById('timer-text');
     const timerBar = document.getElementById('timer-bar');
-    const quoteDisplay = document.getElementById('quote-display');
 
     function showScreen(screen) {
-      welcomeScreen.classList.remove('active');
-      tableScreen.classList.remove('active');
-      quizScreen.classList.remove('active');
-      resultScreen.classList.remove('active');
+      [welcomeScreen, tableScreen, quizScreen, resultScreen].forEach(s => s.classList.remove('active'));
       screen.classList.add('active');
     }
 
@@ -798,54 +696,31 @@
     function goToTablePage() { showScreen(tableScreen); }
 
     function onOpChange() {
-      const op = document.getElementById('op-select').value;
-      const titleEl = document.getElementById('page-title');
-      const tableTitleEl = document.getElementById('table-title');
-      const specificLabel = document.getElementById('specific-label');
-
-      if (op === 'division') {
-        titleEl.textContent = 'Pembagian Challenge';
-        tableTitleEl.textContent = 'Bagan Pembagian 📚';
-        specificLabel.textContent = 'Fokus Pembagi Berapa?';
-      } else {
-        titleEl.textContent = 'Perkalian Challenge';
-        tableTitleEl.textContent = 'Bagan Perkalian 📚';
-        specificLabel.textContent = 'Fokus Perkalian Berapa?';
-      }
       renderMathTable();
     }
 
     function toggleModeUI() {
       const mode = document.getElementById('mode-select').value;
-      const singleUI = document.getElementById('single-mode-ui');
-      const randomUI = document.getElementById('random-mode-ui');
-
-      if (mode === 'single') {
-        singleUI.style.display = 'block';
-        randomUI.style.display = 'none';
-      } else {
-        singleUI.style.display = 'none';
-        randomUI.style.display = 'block';
-      }
+      document.getElementById('single-mode-ui').style.display = (mode === 'single') ? 'block' : 'none';
+      document.getElementById('random-mode-ui').style.display = (mode !== 'single') ? 'block' : 'none';
+      document.getElementById('op-select').style.display = (mode === 'complex') ? 'none' : 'block';
+      document.getElementById('op-label').style.display = (mode === 'complex') ? 'none' : 'block';
+      document.getElementById('table-card-container').style.display = (mode === 'complex') ? 'none' : 'block';
     }
 
     function renderMathTable() {
       const op = document.getElementById('op-select').value;
       const table = document.getElementById('math-table');
-      const rowColors = ['#dbeafe', '#ccfbf1', '#dcfce7', '#fef9c3', '#ffedd5', '#ffe4e6', '#f3e8ff', '#e0e7ff', '#fae8ff', '#fee2e2'];
-
       let symbol = op === 'division' ? '÷' : '×';
       let html = `<thead><tr><th>${symbol}</th>`;
-      
       for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
       html += '</tr></thead><tbody>';
 
       for (let row = 1; row <= 10; row++) {
-        const bg = rowColors[(row - 1) % rowColors.length];
-        html += `<tr><td class="header-cell" style="background:${bg}; font-weight:bold;">${row}</td>`;
+        html += `<tr><td style="font-weight:bold">${row}</td>`;
         for (let col = 1; col <= 10; col++) {
-          let val = op === 'division' ? (row * col) + '÷' + col + '=' + row : row * col;
-          html += `<td style="background:${bg};">${val}</td>`;
+          let val = op === 'division' ? (row * col) + '÷' + col : row * col;
+          html += `<td>${val}</td>`;
         }
         html += '</tr>';
       }
@@ -853,79 +728,57 @@
       table.innerHTML = html;
     }
 
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
     function generateQuestions() {
       questions = [];
       const op = document.getElementById('op-select').value;
       const mode = document.getElementById('mode-select').value;
+      let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
+      let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+      if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
 
-      if (op === 'multiplication') {
-        if (mode === 'single') {
-          const baseNum = parseInt(document.getElementById('specific-num').value, 10);
-          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-            const multiplier = getRandomInt(1, 10);
-            const swap = Math.random() < 0.5;
-            const num1 = swap ? baseNum : multiplier;
-            const num2 = swap ? multiplier : baseNum;
-            questions.push({ symbol: '×', num1: num1, num2: num2, answer: num1 * num2 });
-          }
-        } else {
-          let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
-          let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
-          if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
+      if (mode === 'complex') {
+        const ops = ['+', '-', '×'];
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+          let a = getRandomInt(minNum, maxNum), b = getRandomInt(minNum, maxNum), c = getRandomInt(0, 9);
+          let op1 = ops[getRandomInt(0, ops.length - 1)], op2 = ops[getRandomInt(0, ops.length - 1)];
+          let text = `${a} ${op1} ${b} ${op2} ${c}`, answer;
 
-          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-            const num1 = getRandomInt(minNum, maxNum);
-            const num2 = getRandomInt(1, 10);
-            questions.push({ symbol: '×', num1: num1, num2: num2, answer: num1 * num2 });
-          }
+          if (op1 === '×' && op2 !== '×') answer = (op2 === '+') ? (a * b) + c : (a * b) - c;
+          else if (op2 === '×' && op1 !== '×') answer = (op1 === '+') ? a + (b * c) : a - (b * c);
+          else if (op1 === '×' && op2 === '×') answer = a * b * c;
+          else answer = (op1 === '+') ? ((op2 === '+') ? a + b + c : a + b - c) : ((op2 === '+') ? a - b + c : a - b - c);
+
+          questions.push({ text: text, answer: answer });
         }
-      } else { // Pembagian (Division)
-        if (mode === 'single') {
-          const divisor = parseInt(document.getElementById('specific-num').value, 10); // Pembagi
-          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-            const quotient = getRandomInt(1, 10); // Hasil bagi
-            const dividend = divisor * quotient; // Angka yang dibagi
-            questions.push({ symbol: '÷', num1: dividend, num2: divisor, answer: quotient });
-          }
-        } else {
-          let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
-          let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
-          if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
+        return;
+      }
 
-          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-            const divisor = getRandomInt(minNum, maxNum);
-            const quotient = getRandomInt(1, 10);
-            const dividend = divisor * quotient;
-            questions.push({ symbol: '÷', num1: dividend, num2: divisor, answer: quotient });
-          }
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        let n1 = getRandomInt(minNum, maxNum), n2 = getRandomInt(1, 10);
+        if (op === 'multiplication') {
+          questions.push({ text: `${n1} × ${n2}`, answer: n1 * n2 });
+        } else {
+          let dividend = n1 * n2;
+          questions.push({ text: `${dividend} ÷ ${n1}`, answer: n2 });
         }
       }
     }
 
     function startQuiz() {
       generateQuestions();
-      currentQuestionIndex = 0;
-      userAnswers = [];
+      currentQuestionIndex = 0; userAnswers = [];
       showScreen(quizScreen);
       loadQuestion();
     }
 
     function loadQuestion() {
-      if (currentQuestionIndex >= TOTAL_QUESTIONS) {
-        showResults();
-        return;
-      }
-
+      if (currentQuestionIndex >= TOTAL_QUESTIONS) { showResults(); return; }
       const q = questions[currentQuestionIndex];
-      questionDisplay.textContent = `${q.num1} ${q.symbol} ${q.num2}`;
+      questionDisplay.textContent = q.text;
       progressText.textContent = `Soal ${currentQuestionIndex + 1}/${TOTAL_QUESTIONS}`;
-      userInput.value = '';
-      userInput.focus();
-
+      userInput.value = ''; userInput.focus();
       resetTimer();
     }
 
@@ -933,94 +786,44 @@
       clearInterval(timer);
       timeLeft = TIME_PER_QUESTION;
       updateTimerUI();
-
       timer = setInterval(() => {
         timeLeft -= 0.1;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          recordAnswer(null);
-        } else {
-          updateTimerUI();
-        }
+        if (timeLeft <= 0) { clearInterval(timer); recordAnswer(null); } 
+        else { updateTimerUI(); }
       }, 100);
     }
 
     function updateTimerUI() {
-      const percentage = (timeLeft / TIME_PER_QUESTION) * 100;
-      timerBar.style.width = `${Math.max(0, percentage)}%`;
+      timerBar.style.width = `${Math.max(0, (timeLeft / TIME_PER_QUESTION) * 100)}%`;
       timerText.textContent = `⏱️ ${Math.ceil(timeLeft)}s`;
     }
 
     function submitAnswer(e) {
       e.preventDefault();
       clearInterval(timer);
-      
       const val = userInput.value.trim();
-      const numVal = val === '' ? null : parseInt(val, 10);
-      recordAnswer(numVal);
+      recordAnswer(val === '' ? null : parseInt(val, 10));
     }
 
     function recordAnswer(ans) {
       const q = questions[currentQuestionIndex];
-      userAnswers.push({
-        question: `${q.num1} ${q.symbol} ${q.num2}`,
-        correctAnswer: q.answer,
-        userAnswer: ans,
-        isCorrect: ans === q.answer
-      });
-
+      userAnswers.push({ question: q.text, correctAnswer: q.answer, userAnswer: ans, isCorrect: ans === q.answer });
       currentQuestionIndex++;
       loadQuestion();
     }
 
     function showResults() {
       showScreen(resultScreen);
-
       let correctCount = userAnswers.filter(a => a.isCorrect).length;
       document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
 
-      const emojiEl = document.getElementById('result-emoji');
-      const titleEl = document.getElementById('result-title');
-      
-      if (correctCount === 10) {
-        emojiEl.textContent = '👑';
-        titleEl.textContent = 'Sempurna! 100%';
-      } else if (correctCount >= 7) {
-        emojiEl.textContent = '🍓';
-        titleEl.textContent = 'Hebat Banget!';
-      } else {
-        emojiEl.textContent = '🌱';
-        titleEl.textContent = 'Ayo Latihan Lagi!';
-      }
-
-      const randomQuoteIndex = Math.floor(Math.random() * QUOTES.length);
-      quoteDisplay.textContent = QUOTES[randomQuoteIndex];
-
       const container = document.getElementById('analysis-container');
       container.innerHTML = '';
-
       userAnswers.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = `analysis-item ${item.isCorrect ? 'correct' : 'wrong'}`;
-
-        let userText = item.userAnswer === null ? 'Waktu habis ⏱️' : item.userAnswer;
-
-        if (item.isCorrect) {
-          div.innerHTML = `
-            <div>
-              <strong>${index + 1}. ${item.question} = ${item.correctAnswer}</strong>
-            </div>
-            <span class="badge-ans correct-text">Benar ✨</span>
-          `;
-        } else {
-          div.innerHTML = `
-            <div>
-              <strong>${index + 1}. ${item.question}</strong><br>
-              <small>Kamu: <span class="wrong-text">${userText}</span> | Harusnya: <span class="correct-text">${item.correctAnswer}</span></small>
-            </div>
-            <span class="badge-ans wrong-text">Salah ❌</span>
-          `;
-        }
+        let userText = item.userAnswer === null ? 'Waktu Habis' : item.userAnswer;
+        div.innerHTML = `<div><strong>${index + 1}. ${item.question}</strong><br><small>Jawaban: ${userText} (Benar: ${item.correctAnswer})</small></div>`;
         container.appendChild(div);
       });
     }
