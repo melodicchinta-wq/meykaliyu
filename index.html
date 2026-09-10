@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Jigsaw Playground 🧩</title>
+  <title>Custom Jigsaw & Math Playground 🧩🔢</title>
   <style>
     :root {
       --bg-color: #ffeef2;
@@ -58,7 +58,6 @@
       margin-bottom: 10px;
     }
 
-    /* Tombol Upload Custom Foto */
     .upload-btn-wrapper {
       margin-bottom: 12px;
     }
@@ -105,11 +104,9 @@
       transform: scale(0.96);
     }
 
-    /* Screen Management */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* Canvas Area Jigsaw Puzzle */
     .puzzle-box {
       background: #fff0f3;
       border: 3px dashed #ffccd5;
@@ -131,7 +128,6 @@
       cursor: grabbing;
     }
 
-    /* Tabel Perkalian Style (Halaman 2) */
     .table-card {
       background: #fff5f7;
       border: 3px dashed #ffccd5;
@@ -178,7 +174,6 @@
       color: #1e293b;
     }
 
-    /* Setting Perkalian UI */
     .setting-card {
       background: #fdf2f8;
       border: 2px solid #fbcfe8;
@@ -213,7 +208,6 @@
       align-items: center;
     }
 
-    /* Quiz Screen Components */
     .quiz-header {
       display: flex;
       justify-content: space-between;
@@ -287,7 +281,6 @@
       margin: 0;
     }
 
-    /* Score & Results */
     .score-circle {
       width: 90px;
       height: 90px;
@@ -371,38 +364,44 @@
       <button class="btn" onclick="goToTablePage()">Lanjut Ke Halaman Berikutnya ➔</button>
     </div>
 
-    <!-- 2. HALAMAN KEDUA: TABEL & SETTING PERKALIAN -->
+    <!-- 2. HALAMAN KEDUA: TABEL & SETTING MATEMATIKA -->
     <div id="table-screen" class="screen">
-      <div style="font-size: 2.2rem; margin-bottom: 4px;">📊✨</div>
-      <h1>Perkalian Challenge</h1>
-      <p class="subtitle">Pilih mode latihan perkalianmu! 🌸</p>
+      <div style="font-size: 2.2rem; margin-bottom: 4px;">🔢✨</div>
+      <h1 id="page-title">Math Challenge</h1>
+      <p class="subtitle">Pilih operasi dan latihan pilihanmu! 🌸</p>
 
-      <!-- Panel Pengaturan Perkalian -->
+      <!-- Panel Pengaturan Matematika -->
       <div class="setting-card">
-        <label for="mode-select">⚙️ Mode Perkalian:</label>
+        <label for="op-select">🧮 Operasi Matematika:</label>
+        <select id="op-select" onchange="onOpChange()">
+          <option value="multiplication" selected>✖️ Perkalian</option>
+          <option value="division">➗ Pembagian</option>
+        </select>
+
+        <label for="mode-select">⚙️ Mode Soal:</label>
         <select id="mode-select" onchange="toggleModeUI()">
-          <option value="single">Perkalian Tertentu (Spesifik)</option>
+          <option value="single">Angka Spesifik</option>
           <option value="random" selected>Random / Acak (Campur)</option>
         </select>
 
-        <!-- Pilihan Perkalian Spesifik -->
+        <!-- Pilihan Spesifik -->
         <div id="single-mode-ui" style="display: none;">
-          <label for="specific-num">Fokus Perkalian Berapa?</label>
+          <label id="specific-label" for="specific-num">Fokus Angka Berapa?</label>
           <select id="specific-num">
-            <option value="1">Perkalian 1</option>
-            <option value="2">Perkalian 2</option>
-            <option value="3">Perkalian 3</option>
-            <option value="4">Perkalian 4</option>
-            <option value="5">Perkalian 5</option>
-            <option value="6">Perkalian 6</option>
-            <option value="7" selected>Perkalian 7</option>
-            <option value="8">Perkalian 8</option>
-            <option value="9">Perkalian 9</option>
-            <option value="10">Perkalian 10</option>
+            <option value="1">Angka 1</option>
+            <option value="2">Angka 2</option>
+            <option value="3">Angka 3</option>
+            <option value="4">Angka 4</option>
+            <option value="5">Angka 5</option>
+            <option value="6">Angka 6</option>
+            <option value="7" selected>Angka 7</option>
+            <option value="8">Angka 8</option>
+            <option value="9">Angka 9</option>
+            <option value="10">Angka 10</option>
           </select>
         </div>
 
-        <!-- Pilihan Mode Random (Rentang Angka) -->
+        <!-- Pilihan Mode Random -->
         <div id="random-mode-ui">
           <label>Rentang Angka Random:</label>
           <div class="range-group">
@@ -414,9 +413,9 @@
       </div>
 
       <div class="table-card">
-        <h3>Bagan Perkalian 📚</h3>
+        <h3 id="table-title">Bagan Matematika 📚</h3>
         <div class="table-scroll">
-          <table class="m-table" id="multiplication-table">
+          <table class="m-table" id="math-table">
             <!-- Diisi otomatis via JS -->
           </table>
         </div>
@@ -463,15 +462,13 @@
       <div class="analysis-list" id="analysis-container"></div>
 
       <button class="btn" onclick="startQuiz()">Coba Lagi 🔄</button>
-      <button class="btn btn-secondary" onclick="goToTablePage()">Atur Ulang Perkalian 📊</button>
+      <button class="btn btn-secondary" onclick="goToTablePage()">Atur Ulang Pengaturan 📊</button>
     </div>
 
   </div>
 
   <script>
-    /* ========================================================
-       SISTEM JIGSAW PUZZLE
-    ======================================================== */
+    /* SISTEM JIGSAW PUZZLE */
     const canvas = document.getElementById('jigsaw-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -516,7 +513,6 @@
       oCtx.arc(100, 40, 20, 0, Math.PI * 2);
       oCtx.fill();
 
-      // Beruang Cute
       oCtx.fillStyle = '#f7d6b8';
       oCtx.beginPath(); oCtx.arc(125, 90, 16, 0, Math.PI*2); oCtx.fill();
       oCtx.beginPath(); oCtx.arc(175, 90, 16, 0, Math.PI*2); oCtx.fill();
@@ -759,10 +755,7 @@
     canvas.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
-
-    /* ==========================================================
-       LOGIKA PERKALIAN & QUIZ (MODE CUSTOM & RANDOM)
-    ========================================================== */
+    /* LOGIKA PERKALIAN, PEMBAGIAN & QUIZ */
     const TOTAL_QUESTIONS = 10;
     const TIME_PER_QUESTION = 10;
 
@@ -772,7 +765,7 @@
       "“Setiap kesalahan adalah langkah kecil menuju jawaban yang benar! 🌱”",
       "“Kamu hebat sudah berusaha berhitung sebaik mungkin hari ini! 👏💖”",
       "“Jangan pernah berhenti berlatih, otakmu semakin jago matematika! 🧠💫”",
-      "“Hebat! Latihan terus agar perkalianmu makin cepat dan akurat! 🚀”",
+      "“Hebat! Latihan terus agar matematika makin lancar! 🚀”",
       "“Kuasai matematika dasar untuk jadi juara esok hari! ✨👑”"
     ];
 
@@ -804,6 +797,24 @@
     function goToHome() { showScreen(welcomeScreen); }
     function goToTablePage() { showScreen(tableScreen); }
 
+    function onOpChange() {
+      const op = document.getElementById('op-select').value;
+      const titleEl = document.getElementById('page-title');
+      const tableTitleEl = document.getElementById('table-title');
+      const specificLabel = document.getElementById('specific-label');
+
+      if (op === 'division') {
+        titleEl.textContent = 'Pembagian Challenge';
+        tableTitleEl.textContent = 'Bagan Pembagian 📚';
+        specificLabel.textContent = 'Fokus Pembagi Berapa?';
+      } else {
+        titleEl.textContent = 'Perkalian Challenge';
+        tableTitleEl.textContent = 'Bagan Perkalian 📚';
+        specificLabel.textContent = 'Fokus Perkalian Berapa?';
+      }
+      renderMathTable();
+    }
+
     function toggleModeUI() {
       const mode = document.getElementById('mode-select').value;
       const singleUI = document.getElementById('single-mode-ui');
@@ -818,19 +829,23 @@
       }
     }
 
-    function renderMultiplicationTable() {
-      const table = document.getElementById('multiplication-table');
+    function renderMathTable() {
+      const op = document.getElementById('op-select').value;
+      const table = document.getElementById('math-table');
       const rowColors = ['#dbeafe', '#ccfbf1', '#dcfce7', '#fef9c3', '#ffedd5', '#ffe4e6', '#f3e8ff', '#e0e7ff', '#fae8ff', '#fee2e2'];
 
-      let html = '<thead><tr><th>×</th>';
-      for (let col = 3; col <= 9; col++) html += `<th>${col}</th>`;
+      let symbol = op === 'division' ? '÷' : '×';
+      let html = `<thead><tr><th>${symbol}</th>`;
+      
+      for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
       html += '</tr></thead><tbody>';
 
-      for (let row = 3; row <= 9; row++) {
-        const bg = rowColors[row - 1];
+      for (let row = 1; row <= 10; row++) {
+        const bg = rowColors[(row - 1) % rowColors.length];
         html += `<tr><td class="header-cell" style="background:${bg}; font-weight:bold;">${row}</td>`;
-        for (let col = 3; col <= 9; col++) {
-          html += `<td style="background:${bg};">${row * col}</td>`;
+        for (let col = 1; col <= 10; col++) {
+          let val = op === 'division' ? (row * col) + '÷' + col + '=' + row : row * col;
+          html += `<td style="background:${bg};">${val}</td>`;
         }
         html += '</tr>';
       }
@@ -844,33 +859,49 @@
 
     function generateQuestions() {
       questions = [];
+      const op = document.getElementById('op-select').value;
       const mode = document.getElementById('mode-select').value;
 
-      if (mode === 'single') {
-        const baseNum = parseInt(document.getElementById('specific-num').value, 10);
-        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-          const multiplier = getRandomInt(1, 10);
-          // Acak posisi perkalian misal 7 x 4 atau 4 x 7
-          const swap = Math.random() < 0.5;
-          const num1 = swap ? baseNum : multiplier;
-          const num2 = swap ? multiplier : baseNum;
+      if (op === 'multiplication') {
+        if (mode === 'single') {
+          const baseNum = parseInt(document.getElementById('specific-num').value, 10);
+          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            const multiplier = getRandomInt(1, 10);
+            const swap = Math.random() < 0.5;
+            const num1 = swap ? baseNum : multiplier;
+            const num2 = swap ? multiplier : baseNum;
+            questions.push({ symbol: '×', num1: num1, num2: num2, answer: num1 * num2 });
+          }
+        } else {
+          let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
+          let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+          if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
 
-          questions.push({ num1: num1, num2: num2, answer: num1 * num2 });
+          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            const num1 = getRandomInt(minNum, maxNum);
+            const num2 = getRandomInt(1, 10);
+            questions.push({ symbol: '×', num1: num1, num2: num2, answer: num1 * num2 });
+          }
         }
-      } else {
-        let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
-        let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+      } else { // Pembagian (Division)
+        if (mode === 'single') {
+          const divisor = parseInt(document.getElementById('specific-num').value, 10); // Pembagi
+          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            const quotient = getRandomInt(1, 10); // Hasil bagi
+            const dividend = divisor * quotient; // Angka yang dibagi
+            questions.push({ symbol: '÷', num1: dividend, num2: divisor, answer: quotient });
+          }
+        } else {
+          let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
+          let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+          if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
 
-        if (minNum > maxNum) {
-          let temp = minNum;
-          minNum = maxNum;
-          maxNum = temp;
-        }
-
-        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-          const num1 = getRandomInt(minNum, maxNum);
-          const num2 = getRandomInt(1, 10);
-          questions.push({ num1: num1, num2: num2, answer: num1 * num2 });
+          for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            const divisor = getRandomInt(minNum, maxNum);
+            const quotient = getRandomInt(1, 10);
+            const dividend = divisor * quotient;
+            questions.push({ symbol: '÷', num1: dividend, num2: divisor, answer: quotient });
+          }
         }
       }
     }
@@ -890,7 +921,7 @@
       }
 
       const q = questions[currentQuestionIndex];
-      questionDisplay.textContent = `${q.num1} × ${q.num2}`;
+      questionDisplay.textContent = `${q.num1} ${q.symbol} ${q.num2}`;
       progressText.textContent = `Soal ${currentQuestionIndex + 1}/${TOTAL_QUESTIONS}`;
       userInput.value = '';
       userInput.focus();
@@ -932,7 +963,7 @@
     function recordAnswer(ans) {
       const q = questions[currentQuestionIndex];
       userAnswers.push({
-        question: `${q.num1} × ${q.num2}`,
+        question: `${q.num1} ${q.symbol} ${q.num2}`,
         correctAnswer: q.answer,
         userAnswer: ans,
         isCorrect: ans === q.answer
@@ -996,7 +1027,7 @@
 
     window.onload = function() {
       createDefaultImage();
-      renderMultiplicationTable();
+      renderMathTable();
       toggleModeUI();
     };
   </script>
