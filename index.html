@@ -40,13 +40,12 @@
       color: var(--text-main);
     }
 
-    /* Container Glassmorphism */
     .container {
       background: var(--card-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       border-radius: 28px;
       padding: 24px 20px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
@@ -57,7 +56,6 @@
       overflow: hidden;
     }
 
-    /* Glowing Blob Effect in Background */
     .container::before {
       content: '';
       position: absolute;
@@ -88,9 +86,7 @@
       margin-bottom: 18px;
     }
 
-    .upload-btn-wrapper {
-      margin-bottom: 16px;
-    }
+    .upload-btn-wrapper { margin-bottom: 16px; }
 
     .btn-upload {
       background: rgba(255, 255, 255, 0.05);
@@ -103,15 +99,8 @@
       display: inline-block;
       transition: all 0.2s;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(5px);
     }
 
-    .btn-upload:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Modern Buttons */
     .btn {
       background: var(--primary-gradient);
       color: #fff;
@@ -125,27 +114,14 @@
       transition: all 0.2s ease;
       width: 100%;
       margin-top: 10px;
-      letter-spacing: 0.5px;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 26px rgba(255, 0, 85, 0.45);
-    }
-
-    .btn:active {
-      transform: translateY(1px);
-    }
+    .btn:hover { transform: translateY(-2px); }
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.05);
       color: var(--text-main);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: none;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
       box-shadow: none;
     }
 
@@ -160,14 +136,12 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* Jigsaw Card Canvas Frame */
     .puzzle-box {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       padding: 10px;
       margin-bottom: 14px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
     }
 
     #jigsaw-canvas {
@@ -178,7 +152,6 @@
       cursor: grab;
     }
 
-    /* Cards / Glass Panels */
     .setting-card, .table-card {
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -195,7 +168,6 @@
       display: block;
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
     }
 
     .setting-card select, .setting-card input[type="number"] {
@@ -208,20 +180,129 @@
       margin-bottom: 12px;
       background: rgba(15, 7, 24, 0.8);
       color: #fff;
-      transition: border-color 0.2s;
     }
 
-    .setting-card select:focus, .setting-card input:focus {
-      border-color: var(--accent-neon);
+    .range-group { display: flex; gap: 10px; align-items: center; }
+
+    /* LEVEL SELECT GRID DENGAN GEMBOK */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
     }
 
-    .range-group {
+    .level-box {
+      aspect-ratio: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
       display: flex;
-      gap: 10px;
       align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    /* Quiz Screen Styles */
+    .level-box.selected {
+      background: var(--primary-gradient);
+      border-color: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 0, 85, 0.8);
+    }
+
+    .level-box.locked {
+      background: rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 255, 255, 0.05);
+      color: #64748b;
+      cursor: not-allowed;
+      font-size: 0.8rem;
+    }
+
+    /* NUMBER CROSSWORD PUZZLE STYLES */
+    .cw-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .cw-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .cw-cell {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .cw-cell.empty { background: transparent; }
+    .cw-cell.fixed {
+      background: #ffffff;
+      color: #000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .cw-cell.fillable {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px dashed rgba(255, 0, 85, 0.5);
+      color: #ff0055;
+      cursor: pointer;
+    }
+    .cw-cell.fillable.active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.2);
+    }
+    .cw-cell.fillable.filled {
+      background: #ff0055;
+      border: 2px solid #ffffff;
+      color: #fff;
+    }
+
+    .cw-choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 350px;
+    }
+
+    .cw-chip {
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      color: #000;
+      font-weight: 800;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
+    }
+
+    .cw-chip:active { transform: scale(0.95); }
+    .cw-chip.used { opacity: 0.2; pointer-events: none; }
+
+    /* QUIZ STYLES */
     .quiz-header {
       display: flex;
       justify-content: space-between;
@@ -252,7 +333,6 @@
       height: 100%;
       width: 100%;
       background: var(--primary-gradient);
-      box-shadow: 0 0 12px rgba(255, 0, 85, 0.8);
       transition: width 0.1s linear;
     }
 
@@ -262,13 +342,11 @@
       border-radius: 20px;
       padding: 24px 12px;
       margin-bottom: 18px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
     .question-text {
       font-size: 2.5rem;
       font-weight: 800;
-      letter-spacing: 1px;
       background: linear-gradient(135deg, #ffffff, #ff7597);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -286,15 +364,8 @@
       background: rgba(0, 0, 0, 0.5);
       color: #fff;
       margin-bottom: 12px;
-      transition: all 0.2s;
     }
 
-    .quiz-input:focus {
-      border-color: #ff0055;
-      box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
-    }
-
-    /* Results */
     .score-circle {
       width: 110px;
       height: 110px;
@@ -304,64 +375,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 800;
-      color: #fff;
       margin: 16px auto;
-      box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
     }
 
-    .quote-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px rgba(255, 255, 255, 0.1) dashed;
-      border-radius: 14px;
-      padding: 12px;
-      margin: 14px 0;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    .analysis-list {
-      max-height: 170px;
-      overflow-y: auto;
-      text-align: left;
-      margin: 12px 0;
-      padding-right: 4px;
-    }
-
-    .analysis-item {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      border-left: 4px solid var(--text-muted);
-    }
-
-    .analysis-item.wrong { border-left-color: var(--wrong); }
-    .analysis-item.correct { border-left-color: var(--correct); }
-
-    /* Custom Table Style */
     .table-scroll { overflow-x: auto; border-radius: 10px; }
     table.m-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
     table.m-table th, table.m-table td { padding: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
     table.m-table th { background: rgba(255,0,85,0.2); color: #fff; }
     table.m-table td { background: rgba(0,0,0,0.2); }
-
-    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-      -webkit-appearance: none; margin: 0;
-    }
   </style>
 </head>
 <body>
 
   <div class="container">
     
-    <!-- 1. HALAMAN PUZZLE -->
+    <!-- 1. HALAMAN PUZZLE JIGSAW -->
     <div id="welcome-screen" class="screen active">
       <div style="font-size: 2.2rem; margin-bottom: 2px;">🎮</div>
       <h1>Jigsaw Arena</h1>
@@ -397,6 +427,7 @@
           <option value="single">Angka Spesifik (2 Angka)</option>
           <option value="random" selected>Acak Standard (2 Angka)</option>
           <option value="complex">🔥 Campuran Kompleks (3 Angka)</option>
+          <option value="grid_level">🧩 Teka-Teki Silang Angka</option>
         </select>
 
         <div id="single-mode-ui" style="display: none;">
@@ -418,36 +449,62 @@
         </div>
       </div>
 
+      <!-- KOTAK BAGAN / LEVEL CONTAINER -->
       <div class="table-card" id="table-card-container">
         <h3 id="table-title" style="font-size: 0.9rem; margin-bottom: 8px; color: var(--text-muted);">Bagan Referensi 📚</h3>
-        <div class="table-scroll">
+        
+        <!-- BAGAN TABEL -->
+        <div class="table-scroll" id="math-table-wrapper">
           <table class="m-table" id="math-table"></table>
         </div>
+
+        <!-- GRID KOTAK LEVEL -->
+        <div class="level-grid" id="level-grid-wrapper" style="display: none;"></div>
       </div>
 
       <button class="btn" onclick="startQuiz()">Lanjut Ke Tantangan ⚡</button>
       <button class="btn btn-secondary" onclick="goToHome()">⬅️ Kembali ke Puzzle</button>
     </div>
 
-    <!-- 3. HALAMAN QUIZ -->
+    <!-- 3. HALAMAN GAME -->
     <div id="quiz-screen" class="screen">
-      <div class="quiz-header">
-        <span class="progress-badge" id="progress-text">Soal 1/10</span>
-        <span id="timer-text" style="color: #ff5079; font-size: 0.9rem;">⏱️ 10s</span>
+      <!-- MODE QUIZ STANDAR -->
+      <div id="standard-quiz-ui">
+        <div class="quiz-header">
+          <span class="progress-badge" id="progress-text">Soal 1/10</span>
+          <span id="timer-text" style="color: #ff5079; font-size: 0.9rem;">⏱️ 10s</span>
+        </div>
+
+        <div class="timer-container">
+          <div class="timer-bar" id="timer-bar"></div>
+        </div>
+
+        <div class="question-box">
+          <div class="question-text" id="question-display">7 × 7</div>
+        </div>
+
+        <form onsubmit="submitAnswer(event)">
+          <input type="number" id="user-input" class="quiz-input" placeholder="?" autocomplete="off">
+          <button type="submit" class="btn">Jawab ⚡</button>
+        </form>
       </div>
 
-      <div class="timer-container">
-        <div class="timer-bar" id="timer-bar"></div>
-      </div>
+      <!-- MODE TEKA-TEKI SILANG ANGKA -->
+      <div id="crossword-quiz-ui" style="display: none;">
+        <div class="quiz-header">
+          <span class="progress-badge" id="cw-level-badge">Level 1</span>
+          <button class="btn-upload" onclick="resetCrossword()">🔄 Reset</button>
+        </div>
 
-      <div class="question-box">
-        <div class="question-text" id="question-display">7 × 7</div>
-      </div>
+        <div class="cw-container">
+          <div class="cw-grid" id="cw-grid-board"></div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Pilih kotak kosong, lalu pilih angka di bawah:</p>
+          <div class="cw-choices" id="cw-chip-board"></div>
+        </div>
 
-      <form onsubmit="submitAnswer(event)">
-        <input type="number" id="user-input" class="quiz-input" placeholder="?" autocomplete="off">
-        <button type="submit" class="btn">Jawab ⚡</button>
-      </form>
+        <button class="btn" onclick="checkCrosswordSolution()">Periksa Jawaban ⚡</button>
+        <button class="btn btn-secondary" onclick="goToTablePage()">Pengaturan 📊</button>
+      </div>
     </div>
 
     <!-- 4. RESULT SCREEN -->
@@ -455,22 +512,17 @@
       <div style="font-size: 2.2rem; margin-bottom: 2px;" id="result-emoji">🎉</div>
       <h1 id="result-title">Hasil Akhir</h1>
       
-      <div class="score-circle" id="score-display">8/10</div>
+      <div class="score-circle" id="score-display">100%</div>
+      <p id="result-message" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;"></p>
 
-      <div class="quote-box" id="quote-display">"Kerja bagus! Asah terus kecepatan otakmu!"</div>
-
-      <p style="font-weight: 600; margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem;">Analisis Jawaban 📝</p>
-      
-      <div class="analysis-list" id="analysis-container"></div>
-
-      <button class="btn" onclick="startQuiz()">Coba Lagi 🔄</button>
+      <button class="btn" id="next-level-btn" onclick="startQuiz()">Lanjut / Coba Lagi 🔄</button>
       <button class="btn btn-secondary" onclick="goToTablePage()">Pengaturan 📊</button>
     </div>
 
   </div>
 
   <script>
-    /* PUZZLE ENGINE */
+    /* JIGSAW PUZZLE ENGINE */
     const canvas = document.getElementById('jigsaw-canvas');
     const ctx = canvas.getContext('2d');
     const COLS = 3, ROWS = 2, CANVAS_WIDTH = 320;
@@ -671,10 +723,416 @@
     canvas.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
-    /* LOGIKA MATH GAME */
-    const TOTAL_QUESTIONS = 10, TIME_PER_QUESTION = 10;
-    const QUOTES = ["“Pertahankan fokusmu, hasil yang baik butuh latihan!”", "“Kecepatan dan ketepatan adalah kuncinya!”"];
 
+    /* NUMBER CROSSWORD PUZZLE ENGINE & CORRECT LOGIC */
+        const CROSSWORD_LEVELS = {
+      1: {
+        grid: [
+          ['?', '+', '5', '=', '12', '', ''],
+          ['+', '', '', '', '', '', ''],
+          ['?', '×', '?', '=', '16', '', ''],
+          ['=', '', '', '', '', '', ''],
+          ['15', '-', '?', '=', '?', '', ''],
+          ['', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '']
+        ],
+        solution: { "0,0": 7, "2,0": 8, "2,2": 2, "4,2": 9, "4,4": 6 },
+        choices: [7, 8, 2, 9, 6]
+      },
+      2: {
+        grid: [
+          ['', '', '?', '-', '?', '=', '15'],
+          ['', '', '-', '', '', '-', ''],
+          ['4', '+', '?', '=', '16', '', '?'],
+          ['-', '', '=', '', '+', '', '='],
+          ['?', '', '6', '+', '?', '=', '?'],
+          ['=', '', '', '', '=', '', ''],
+          ['3', '×', '7', '=', '?', '', '']
+        ],
+        solution: { "0,2": 18, "0,4": 3, "2,2": 12, "2,6": 5, "4,0": 1, "4,4": 4, "4,6": 10, "6,4": 21 },
+        choices: [21, 18, 12, 10, 1, 5, 3, 4]
+      },
+      3: {
+        grid: [
+          ['?', '+', '?', '=', '20', '', ''],
+          ['+', '', '', '', '', '', ''],
+          ['?', '×', '4', '=', '12', '', ''],
+          ['=', '', '', '', '', '', ''],
+          ['15', '-', '?', '=', '?', '', ''],
+          ['', '', '', '', '-', '', ''],
+          ['', '', '', '', '?', '=', '3']
+        ],
+        solution: { "0,0": 12, "0,2": 8, "2,0": 3, "4,2": 4, "4,4": 11, "6,4": 8 },
+        choices: [12, 8, 3, 4, 11, 8]
+      },
+      4: {
+        grid: [
+          ['36', '÷', '?', '=', '?', '', ''],
+          ['', '', '÷', '', '', '', ''],
+          ['', '', '?', '+', '8', '=', '?'],
+          ['', '', '=', '', '', '', '÷'],
+          ['', '', '?', '×', '?', '=', '?'],
+          ['', '', '', '', '', '', '='],
+          ['', '', '', '', '', '', '2']
+        ],
+        solution: { "0,2": 4, "0,4": 9, "2,2": 7, "2,6": 15, "4,2": 2, "4,4": 5, "4,6": 10 },
+        choices: [4, 9, 7, 15, 2, 5, 10]
+      },
+      5: {
+        grid: [
+          ['?', '+', '15', '=', '?', '', ''],
+          ['÷', '', '', '', '-', '', ''],
+          ['5', '', '', '', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['?', '×', '2', '=', '10', '', '']
+        ],
+        solution: { "0,0": 25, "0,4": 40, "2,4": 30, "4,0": 5 },
+        choices: [25, 40, 30, 5]
+      },
+      6: {
+        grid: [
+          ['?', '×', '3', '=', '?', '', ''],
+          ['+', '', '', '', '÷', '', ''],
+          ['?', '-', '4', '=', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['16', '', '', '', '2', '', '']
+        ],
+        solution: { "0,0": 6, "0,4": 18, "2,0": 10, "2,4": 6 },
+        choices: [6, 18, 10, 6]
+      },
+      7: {
+        grid: [
+          ['?', '+', '?', '=', '18', '', ''],
+          ['÷', '', '-', '', '', '', ''],
+          ['2', '', '?', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['?', '×', '3', '=', '15', '', '']
+        ],
+        solution: { "0,0": 10, "0,2": 8, "2,2": 3, "4,0": 5 },
+        choices: [10, 8, 3, 5]
+      },
+      8: {
+        grid: [
+          ['45', '÷', '?', '=', '?', '', ''],
+          ['-', '', '', '', '+', '', ''],
+          ['?', '+', '6', '=', '21', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['30', '', '', '', '24', '', '']
+        ],
+        solution: { "0,2": 5, "0,4": 9, "2,0": 15 },
+        choices: [5, 9, 15]
+      },
+      9: {
+        grid: [
+          ['?', '×', '?', '=', '24', '', ''],
+          ['-', '', '+', '', '', '', ''],
+          ['8', '', '?', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['?', '+', '10', '=', '14', '', '']
+        ],
+        solution: { "0,0": 12, "0,2": 2, "2,2": 4, "4,0": 4 },
+        choices: [12, 2, 4, 4]
+      },
+      10: {
+        grid: [
+          ['50', '-', '?', '=', '?', '', ''],
+          ['÷', '', '', '', '÷', '', ''],
+          ['?', '', '', '', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['10', '', '', '', '5', '', '']
+        ],
+        solution: { "0,2": 20, "0,4": 30, "2,0": 5, "2,4": 6 },
+        choices: [20, 30, 5, 6]
+      },
+      11: {
+        grid: [
+          ['?', '+', '14', '=', '?', '', ''],
+          ['×', '', '', '', '-', '', ''],
+          ['3', '', '', '', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['?', '-', '12', '=', '15', '', '']
+        ],
+        solution: { "0,0": 9, "0,4": 23, "2,4": 8, "4,0": 27 },
+        choices: [9, 23, 8, 27]
+      },
+      12: {
+        grid: [
+          ['64', '÷', '?', '=', '?', '', ''],
+          ['-', '', '', '', '+', '', ''],
+          ['?', '+', '7', '=', '23', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['48', '', '', '', '15', '', '']
+        ],
+        solution: { "0,2": 8, "0,4": 8, "2,0": 16 },
+        choices: [8, 8, 16]
+      },
+      13: {
+        grid: [
+          ['?', '×', '?', '=', '36', '', ''],
+          ['+', '', '-', '', '', '', ''],
+          ['?', '', '5', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['18', '÷', '2', '=', '9', '', '']
+        ],
+        solution: { "0,0": 9, "0,2": 4, "2,0": 9 },
+        choices: [9, 4, 9]
+      },
+      14: {
+        grid: [
+          ['?', '-', '?', '=', '17', '', ''],
+          ['÷', '', '+', '', '', '', ''],
+          ['4', '', '?', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['?', '×', '5', '=', '35', '', '']
+        ],
+        solution: { "0,0": 28, "0,2": 11, "2,2": 3, "4,0": 7 },
+        choices: [28, 11, 3, 7]
+      },
+      15: {
+        grid: [
+          ['?', '+', '?', '=', '50', '', ''],
+          ['-', '', '÷', '', '', '', ''],
+          ['12', '', '?', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['?', '×', '2', '=', '36', '', '']
+        ],
+        solution: { "0,0": 30, "0,2": 20, "2,2": 2, "4,0": 18 },
+        choices: [30, 20, 2, 18]
+      },
+      16: {
+        grid: [
+          ['81', '÷', '?', '=', '?', '', ''],
+          ['+', '', '', '', '-', '', ''],
+          ['?', '-', '5', '=', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['19', '', '', '', '4', '', '']
+        ],
+        solution: { "0,2": 9, "0,4": 9, "2,0": 10, "2,4": 5 },
+        choices: [9, 9, 10, 5]
+      },
+      17: {
+        grid: [
+          ['?', '×', '4', '=', '?', '', ''],
+          ['-', '', '', '', '÷', '', ''],
+          ['?', '+', '6', '=', '21', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['3', '', '', '', '7', '', '']
+        ],
+        solution: { "0,0": 7, "0,4": 28, "2,0": 15 },
+        choices: [7, 28, 15]
+      },
+      18: {
+        grid: [
+          ['?', '+', '19', '=', '?', '', ''],
+          ['÷', '', '', '', '-', '', ''],
+          ['?', '', '', '', '?', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['8', '×', '3', '=', '24', '', '']
+        ],
+        solution: { "0,0": 32, "0,4": 51, "2,0": 4, "2,4": 27 },
+        choices: [32, 51, 4, 27]
+      },
+      19: {
+        grid: [
+          ['100', '÷', '?', '=', '?', '', ''],
+          ['-', '', '', '', '+', '', ''],
+          ['?', '+', '12', '=', '27', '', ''],
+          ['=', '', '', '', '=', '', ''],
+          ['85', '', '', '', '37', '', '']
+        ],
+        solution: { "0,2": 4, "0,4": 25, "2,0": 15 },
+        choices: [4, 25, 15]
+      },
+      20: {
+        grid: [
+          ['?', '×', '?', '=', '72', '', ''],
+          ['+', '', '-', '', '', '', ''],
+          ['?', '', '3', '', '', '', ''],
+          ['=', '', '=', '', '', '', ''],
+          ['20', '-', '8', '=', '12', '', '']
+        ],
+        solution: { "0,0": 8, "0,2": 9, "2,0": 12 },
+        choices: [8, 9, 12]
+      }
+    };
+
+
+    let activeLevel = 1;
+    let unlockedLevel = parseInt(localStorage.getItem('math_unlocked_level')) || 1;
+    let currentGridState = [];
+    let selectedCell = null;
+    let usedChips = new Set();
+
+    function renderLevelGrid() {
+      const grid = document.getElementById('level-grid-wrapper');
+      grid.innerHTML = '';
+      for (let i = 1; i <= 20; i++) {
+        const box = document.createElement('div');
+        const isLocked = i > unlockedLevel;
+
+        box.className = `level-box ${i === activeLevel ? 'selected' : ''} ${isLocked ? 'locked' : ''}`;
+        box.textContent = isLocked ? '🔒' : i;
+
+        if (!isLocked) {
+          box.onclick = () => {
+            activeLevel = i;
+            renderLevelGrid();
+          };
+        }
+        grid.appendChild(box);
+      }
+    }
+
+    function initCrosswordGame() {
+      const levelData = CROSSWORD_LEVELS[activeLevel] || CROSSWORD_LEVELS[1];
+      document.getElementById('cw-level-badge').textContent = `Level ${activeLevel}`;
+      
+      const gridBoard = document.getElementById('cw-grid-board');
+      gridBoard.innerHTML = '';
+      currentGridState = JSON.parse(JSON.stringify(levelData.grid));
+      selectedCell = null;
+      usedChips.clear();
+
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 7; c++) {
+          const val = (levelData.grid[r] && levelData.grid[r][c]) ? levelData.grid[r][c] : '';
+          const cell = document.createElement('div');
+          cell.className = 'cw-cell';
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+
+          if (val === '') {
+            cell.classList.add('empty');
+          } else if (val === '?') {
+            cell.classList.add('fillable');
+            cell.onclick = () => handleCellClick(r, c);
+          } else {
+            cell.classList.add('fixed');
+            cell.textContent = val;
+          }
+          gridBoard.appendChild(cell);
+        }
+      }
+
+      renderChips(levelData.choices);
+    }
+
+    function handleCellClick(r, c) {
+      const currentVal = currentGridState[r][c];
+      const targetCell = document.querySelector(`.cw-cell[data-row="${r}"][data-col="${c}"]`);
+
+      if (typeof currentVal === 'object' && currentVal !== null && currentVal.chipIdx !== undefined) {
+        usedChips.delete(currentVal.chipIdx);
+        currentGridState[r][c] = '?';
+        
+        targetCell.textContent = '';
+        targetCell.classList.remove('filled', 'active');
+        
+        selectedCell = null;
+        const levelData = CROSSWORD_LEVELS[activeLevel] || CROSSWORD_LEVELS[1];
+        renderChips(levelData.choices);
+        return;
+      }
+
+      selectFillableCell(r, c);
+    }
+
+    function selectFillableCell(r, c) {
+      document.querySelectorAll('.cw-cell.fillable').forEach(el => el.classList.remove('active'));
+      const target = document.querySelector(`.cw-cell[data-row="${r}"][data-col="${c}"]`);
+      if (target) {
+        target.classList.add('active');
+        selectedCell = { r, c };
+      }
+    }
+
+    function renderChips(choices) {
+      const chipBoard = document.getElementById('cw-chip-board');
+      chipBoard.innerHTML = '';
+
+      choices.forEach((num, idx) => {
+        const chip = document.createElement('div');
+        chip.className = `cw-chip ${usedChips.has(idx) ? 'used' : ''}`;
+        chip.textContent = num;
+        chip.onclick = () => placeChipInCell(num, idx);
+        chipBoard.appendChild(chip);
+      });
+    }
+
+    function placeChipInCell(num, chipIdx) {
+      if (!selectedCell) return;
+
+      const { r, c } = selectedCell;
+      const targetCell = document.querySelector(`.cw-cell[data-row="${r}"][data-col="${c}"]`);
+      
+      const oldVal = currentGridState[r][c];
+      if (typeof oldVal === 'object' && oldVal !== null && oldVal.chipIdx !== undefined) {
+        usedChips.delete(oldVal.chipIdx);
+      }
+
+      currentGridState[r][c] = { val: num, chipIdx: chipIdx };
+      usedChips.add(chipIdx);
+
+      targetCell.textContent = num;
+      targetCell.classList.add('filled');
+      targetCell.classList.remove('active');
+
+      selectedCell = null;
+      const levelData = CROSSWORD_LEVELS[activeLevel] || CROSSWORD_LEVELS[1];
+      renderChips(levelData.choices);
+    }
+
+    function resetCrossword() {
+      initCrosswordGame();
+    }
+
+    function checkCrosswordSolution() {
+      const levelData = CROSSWORD_LEVELS[activeLevel] || CROSSWORD_LEVELS[1];
+      let totalCells = 0;
+      let correctCells = 0;
+
+      for (let key in levelData.solution) {
+        totalCells++;
+        const [r, c] = key.split(',').map(Number);
+        const expected = levelData.solution[key];
+        const current = currentGridState[r][c];
+
+        if (current && current.val === expected) {
+          correctCells++;
+        }
+      }
+
+      let wrongCells = totalCells - correctCells;
+      let accuracyPercent = Math.round((correctCells / totalCells) * 100);
+
+      showScreen(resultScreen);
+      
+      if (accuracyPercent === 100) {
+        document.getElementById('result-emoji').textContent = '🎉';
+        document.getElementById('result-title').textContent = `Level ${activeLevel} Selesai!`;
+        document.getElementById('score-display').textContent = '100%';
+        document.getElementById('result-message').textContent = 'Sempurna! Semua kotak terisi dengan benar. Level berikutnya telah terbuka.';
+
+        if (activeLevel === unlockedLevel) {
+          unlockedLevel++;
+          localStorage.setItem('math_unlocked_level', unlockedLevel);
+        }
+        activeLevel++; 
+      } else {
+        document.getElementById('result-emoji').textContent = '❌';
+        document.getElementById('result-title').textContent = 'Masih Ada Yang Salah';
+        document.getElementById('score-display').textContent = `${accuracyPercent}%`;
+        document.getElementById('result-message').innerHTML = `
+          Tingkat Kebenaran: <b>${accuracyPercent}%</b><br>
+          ✅ Correct: <b>${correctCells}</b> kotak<br>
+          ❌ Wrong: <b>${wrongCells}</b> kotak
+        `;
+      }
+    }
+
+
+    /* STANDARD MATH GAME LOGIC */
+    const TOTAL_QUESTIONS = 10, TIME_PER_QUESTION = 10;
     let questions = [], currentQuestionIndex = 0, userAnswers = [], timer = null, timeLeft = TIME_PER_QUESTION;
 
     const welcomeScreen = document.getElementById('welcome-screen');
@@ -693,85 +1151,160 @@
     }
 
     function goToHome() { showScreen(welcomeScreen); }
-    function goToTablePage() { showScreen(tableScreen); }
-
-    function onOpChange() {
-      renderMathTable();
+    function goToTablePage() { 
+      renderLevelGrid();
+      showScreen(tableScreen); 
     }
 
-    function toggleModeUI() {
-      const mode = document.getElementById('mode-select').value;
-      document.getElementById('single-mode-ui').style.display = (mode === 'single') ? 'block' : 'none';
-      document.getElementById('random-mode-ui').style.display = (mode !== 'single') ? 'block' : 'none';
-      document.getElementById('op-select').style.display = (mode === 'complex') ? 'none' : 'block';
-      document.getElementById('op-label').style.display = (mode === 'complex') ? 'none' : 'block';
-      document.getElementById('table-card-container').style.display = (mode === 'complex') ? 'none' : 'block';
-    }
+    function onOpChange() { renderMathTable(); }
+function toggleModeUI() {
+  const mode = document.getElementById('mode-select').value;
+  const isGridLevel = (mode === 'grid_level');
+  const isComplex = (mode === 'complex');
+  const isSingle = (mode === 'single');
+  const isRandom = (mode === 'random');
+  
+  // 1. Sembunyikan OPERASI MATEMATIKA jika Mode Kompleks ATAU Teka-Teki Silang
+  const hideOpSelect = isComplex || isGridLevel;
+  document.getElementById('op-select').style.display = hideOpSelect ? 'none' : 'block';
+  document.getElementById('op-label').style.display = hideOpSelect ? 'none' : 'block';
+
+  // 2. Tampilkan 'Fokus Pada Angka' HANYA saat Mode Angka Spesifik
+  document.getElementById('single-mode-ui').style.display = isSingle ? 'block' : 'none';
+
+  // 3. Tampilkan 'Rentang Angka Acak' HANYA saat Mode Acak Standard (Kompleks tidak perlu lagi)
+  document.getElementById('random-mode-ui').style.display = isRandom ? 'block' : 'none';
+
+  // 4. Sembunyikan seluruh kartu Bagan/Level jika Mode Kompleks
+  document.getElementById('table-card-container').style.display = isComplex ? 'none' : 'block';
+
+  // 5. Atur isi kartu bawah (Bagan Referensi vs Grid Level)
+  if (isGridLevel) {
+    document.getElementById('table-title').textContent = 'Pilih Level Tantangan 🎯';
+    document.getElementById('math-table-wrapper').style.display = 'none';
+    document.getElementById('level-grid-wrapper').style.display = 'grid';
+    renderLevelGrid();
+  } else if (!isComplex) {
+    document.getElementById('table-title').textContent = 'Bagan Referensi 📚';
+    document.getElementById('math-table-wrapper').style.display = 'block';
+    document.getElementById('level-grid-wrapper').style.display = 'none';
+  }
+}
+
+
 
     function renderMathTable() {
-      const op = document.getElementById('op-select').value;
-      const table = document.getElementById('math-table');
-      let symbol = op === 'division' ? '÷' : '×';
-      let html = `<thead><tr><th>${symbol}</th>`;
-      for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
-      html += '</tr></thead><tbody>';
+  const op = document.getElementById('op-select').value;
+  const table = document.getElementById('math-table');
 
-      for (let row = 1; row <= 10; row++) {
-        html += `<tr><td style="font-weight:bold">${row}</td>`;
-        for (let col = 1; col <= 10; col++) {
-          let val = op === 'division' ? (row * col) + '÷' + col : row * col;
-          html += `<td>${val}</td>`;
-        }
-        html += '</tr>';
+  if (op === 'division') {
+    // BAGAN PEMBAGIAN (Format Lengkap: 49÷7=7)
+    let html = `<thead><tr><th>÷</th>`;
+    // Header Kolom (Angka Pembagi: 1 sampai 10)
+    for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
+    html += '</tr></thead><tbody>';
+
+    // Header Baris (Hasil Bagi: 1 sampai 10)
+    for (let row = 1; row <= 10; row++) {
+      html += `<tr><td style="font-weight:bold">${row}</td>`;
+      for (let col = 1; col <= 10; col++) {
+        let dividend = row * col; 
+        // Menampilkan teks lengkap: [Angka]÷[Kolom]=[Baris]
+        // Contoh di Kolom 7, Baris 7: 49÷7=7
+        html += `<td style="font-size:0.6rem; padding:4px 1px; white-space:nowrap;">${dividend}÷${col}=${row}</td>`;
       }
-      html += '</tbody>';
-      table.innerHTML = html;
+      html += '</tr>';
     }
+    html += '</tbody>';
+    table.innerHTML = html;
+  } else {
+    // BAGAN PERKALIAN (Tetap Perkalian Standar)
+    let html = `<thead><tr><th>×</th>`;
+    for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
+    html += '</tr></thead><tbody>';
+
+    for (let row = 1; row <= 10; row++) {
+      html += `<tr><td style="font-weight:bold">${row}</td>`;
+      for (let col = 1; col <= 10; col++) {
+        html += `<td>${row * col}</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    table.innerHTML = html;
+  }
+}
+
 
     function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-    function generateQuestions() {
-      questions = [];
-      const op = document.getElementById('op-select').value;
-      const mode = document.getElementById('mode-select').value;
-      let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
-      let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
-      if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
-
-      if (mode === 'complex') {
-        const ops = ['+', '-', '×'];
-        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-          let a = getRandomInt(minNum, maxNum), b = getRandomInt(minNum, maxNum), c = getRandomInt(0, 9);
-          let op1 = ops[getRandomInt(0, ops.length - 1)], op2 = ops[getRandomInt(0, ops.length - 1)];
-          let text = `${a} ${op1} ${b} ${op2} ${c}`, answer;
-
-          if (op1 === '×' && op2 !== '×') answer = (op2 === '+') ? (a * b) + c : (a * b) - c;
-          else if (op2 === '×' && op1 !== '×') answer = (op1 === '+') ? a + (b * c) : a - (b * c);
-          else if (op1 === '×' && op2 === '×') answer = a * b * c;
-          else answer = (op1 === '+') ? ((op2 === '+') ? a + b + c : a + b - c) : ((op2 === '+') ? a - b + c : a - b - c);
-
-          questions.push({ text: text, answer: answer });
-        }
-        return;
-      }
-
-      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-        let n1 = getRandomInt(minNum, maxNum), n2 = getRandomInt(1, 10);
-        if (op === 'multiplication') {
-          questions.push({ text: `${n1} × ${n2}`, answer: n1 * n2 });
-        } else {
-          let dividend = n1 * n2;
-          questions.push({ text: `${dividend} ÷ ${n1}`, answer: n2 });
-        }
-      }
-    }
-
     function startQuiz() {
-      generateQuestions();
-      currentQuestionIndex = 0; userAnswers = [];
-      showScreen(quizScreen);
-      loadQuestion();
+      const mode = document.getElementById('mode-select').value;
+
+      if (mode === 'grid_level') {
+        document.getElementById('standard-quiz-ui').style.display = 'none';
+        document.getElementById('crossword-quiz-ui').style.display = 'block';
+        initCrosswordGame();
+        showScreen(quizScreen);
+      } else {
+        document.getElementById('standard-quiz-ui').style.display = 'block';
+        document.getElementById('crossword-quiz-ui').style.display = 'none';
+        generateQuestions();
+        currentQuestionIndex = 0; userAnswers = [];
+        showScreen(quizScreen);
+        loadQuestion();
+      }
     }
+
+    function generateQuestions() {
+  questions = [];
+  const op = document.getElementById('op-select').value;
+  const mode = document.getElementById('mode-select').value;
+  let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
+  let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+  if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
+
+  // 1. Mode Campuran Kompleks (3 Angka)
+  if (mode === 'complex') {
+    const ops = ['+', '-', '×'];
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+      let a = getRandomInt(3, 9), b = getRandomInt(2, 9), c = getRandomInt(1, 9);
+      let op1 = ops[getRandomInt(0, ops.length - 1)], op2 = ops[getRandomInt(0, ops.length - 1)];
+      let text = `${a} ${op1} ${b} ${op2} ${c}`, answer;
+
+      if (op1 === '×' && op2 !== '×') answer = (op2 === '+') ? (a * b) + c : (a * b) - c;
+      else if (op2 === '×' && op1 !== '×') answer = (op1 === '+') ? a + (b * c) : a - (b * c);
+      else if (op1 === '×' && op2 === '×') answer = a * b * c;
+      else answer = (op1 === '+') ? ((op2 === '+') ? a + b + c : a + b - c) : ((op2 === '+') ? a - b + c : a - b - c);
+
+      questions.push({ text: text, answer: answer });
+    }
+    return;
+  }
+
+  // 2. Mode Angka Spesifik & Acak Standard (2 Angka)
+  for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+    // n1 = Pembagi utama (sesuai Fokus Angka / Rentang Acak 3-9)
+    let n1 = (mode === 'single') ? parseInt(document.getElementById('specific-num').value, 10) : getRandomInt(minNum, maxNum);
+    // n2 = Target hasil bagi (1 sampai 10)
+    let n2 = getRandomInt(1, 10);
+
+    if (op === 'multiplication') {
+      questions.push({ 
+        text: `${n1} × ${n2}`, 
+        answer: n1 * n2 
+      });
+    } else if (op === 'division') {
+      // Pembagian bulat pas sesuai tabel (Contoh: 21 ÷ 3 = 7 atau 63 ÷ 9 = 7)
+      let dividend = n1 * n2;
+      questions.push({ 
+        text: `${dividend} ÷ ${n1}`, 
+        answer: n2 
+      });
+    }
+  }
+}
+
 
     function loadQuestion() {
       if (currentQuestionIndex >= TOTAL_QUESTIONS) { showResults(); return; }
@@ -813,20 +1346,93 @@
     }
 
     function showResults() {
-      showScreen(resultScreen);
-      let correctCount = userAnswers.filter(a => a.isCorrect).length;
-      document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
+  showScreen(resultScreen);
+  let correctCount = userAnswers.filter(a => a.isCorrect).length;
+  
+  document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
+  
+  // Koleksi Pesan Motivasi Berdasarkan Skor
+  const messages = {
+    perfect: [
+      "Luar biasa! Kamu jenius matematika sejati! 🧠⚡",
+      "Sempurna! Tidak ada satu pun jawaban yang meleset! 🔥",
+      "Kecepatan dan ketelitianmu di atas rata-rata! Top banget! 🏆"
+    ],
+    good: [
+      "Kerja bagus! Otakmu makin cepat dan tajam! 🚀",
+      "Hasil yang sangat baik! Sedikit lagi mencapai nilai sempurna! 💪",
+      "Mantap! Pertahankan fokus dan kecepatan berpikirmu! ✨"
+    ],
+    average: [
+      "Lumayan! Latihan terus biar refleks matematikamu makin lihai! 📐",
+      "Progres yang bagus! Asah terus kecepatan otakmu setiap hari! ⚡",
+      "Jangan menyerah! Coba lagi dan kalahkan skor sebelumnya! 🎯"
+    ],
+    low: [
+      "Tidak apa-apa! Kegagalan adalah langkah awal menuju sukses! 🌱",
+      "Jangan patah semangat! Pelajari analisis jawaban di bawah ya! 💡",
+      "Yuk coba lagi! Otakmu butuh sedikit pemanasan ekstra! 🔥"
+    ]
+  };
 
-      const container = document.getElementById('analysis-container');
-      container.innerHTML = '';
-      userAnswers.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = `analysis-item ${item.isCorrect ? 'correct' : 'wrong'}`;
-        let userText = item.userAnswer === null ? 'Waktu Habis' : item.userAnswer;
-        div.innerHTML = `<div><strong>${index + 1}. ${item.question}</strong><br><small>Jawaban: ${userText} (Benar: ${item.correctAnswer})</small></div>`;
-        container.appendChild(div);
-      });
+  // Pilih kategori pesan berdasarkan jumlah jawaban benar
+  let chosenCategory = [];
+  if (correctCount === TOTAL_QUESTIONS) {
+    document.getElementById('result-emoji').textContent = '🎉';
+    document.getElementById('result-title').textContent = 'Sempurna!';
+    chosenCategory = messages.perfect;
+  } else if (correctCount >= 7) {
+    document.getElementById('result-emoji').textContent = '👏';
+    document.getElementById('result-title').textContent = 'Hasil Bagus!';
+    chosenCategory = messages.good;
+  } else if (correctCount >= 4) {
+    document.getElementById('result-emoji').textContent = '👍';
+    document.getElementById('result-title').textContent = 'Tetap Semangat!';
+    chosenCategory = messages.average;
+  } else {
+    document.getElementById('result-emoji').textContent = '🥳';
+    document.getElementById('result-title').textContent = 'Yuk Coba Lagi!';
+    chosenCategory = messages.low;
+  }
+
+  // Ambil teks acak dari kategori yang sesuai
+  const randomMotivation = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+
+  // Buat HTML Tampilan Analisis Jawaban
+  let analysisHtml = `
+    <p style="font-style: italic; color: #ff7597; font-size: 0.85rem; margin-bottom: 16px; font-weight: 600;">
+      "${randomMotivation}"
+    </p>
+    <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Analisis Jawaban 📝</h3>
+    <div style="max-height: 220px; overflow-y: auto; text-align: left; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
+  `;
+
+  userAnswers.forEach((item, index) => {
+    let userText = '';
+    if (item.userAnswer === null) {
+      userText = '<span style="color: #ff0055;">Waktu Habis</span>';
+    } else if (item.isCorrect) {
+      userText = `<span style="color: #10b981;">${item.userAnswer} (Benar)</span>`;
+    } else {
+      userText = `<span style="color: #ff0055;">${item.userAnswer}</span>`;
     }
+
+    let borderColor = item.isCorrect ? '#10b981' : '#ff0055';
+
+    analysisHtml += `
+      <div style="background: rgba(0,0,0,0.4); border-left: 4px solid ${borderColor}; padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;">
+        <div style="font-weight: 800; color: #fff; margin-bottom: 2px;">${index + 1}. ${item.question}</div>
+        <div style="color: var(--text-muted); font-size: 0.8rem;">
+          Jawaban: ${userText} ${!item.isCorrect ? `<span style="color: #94a3b8;">(Benar: ${item.correctAnswer})</span>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  analysisHtml += `</div>`;
+  
+  document.getElementById('result-message').innerHTML = analysisHtml;
+}
 
     window.onload = function() {
       createDefaultImage();
