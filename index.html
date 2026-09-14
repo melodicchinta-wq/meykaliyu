@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cyber Jigsaw & Math Arena ⚡</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    /* Menghapus @import Google Fonts agar 100% Offline */
 
     :root {
       --bg-dark: #0a050e;
@@ -18,11 +19,13 @@
       --text-muted: #94a3b8;
       --correct: #10b981;
       --wrong: #ff0055;
+      /* Font Fallback lokal bawaan sistem */
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     * {
       box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-main);
       margin: 0;
       padding: 0;
     }
@@ -184,7 +187,6 @@
 
     .range-group { display: flex; gap: 10px; align-items: center; }
 
-    /* LEVEL SELECT GRID DENGAN GEMBOK */
     .level-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -221,7 +223,6 @@
       font-size: 0.8rem;
     }
 
-    /* NUMBER CROSSWORD PUZZLE STYLES */
     .cw-container {
       display: flex;
       flex-direction: column;
@@ -302,7 +303,6 @@
     .cw-chip:active { transform: scale(0.95); }
     .cw-chip.used { opacity: 0.2; pointer-events: none; }
 
-    /* QUIZ STYLES */
     .quiz-header {
       display: flex;
       justify-content: space-between;
@@ -548,7 +548,7 @@
       oCtx.fillRect(0, 0, 300, 200);
 
       oCtx.fillStyle = '#ffffff';
-      oCtx.font = 'bold 32px Plus Jakarta Sans';
+      oCtx.font = 'bold 32px sans-serif';
       oCtx.textAlign = 'center';
       oCtx.fillText('ARENA MATH', 150, 105);
 
@@ -723,9 +723,8 @@
     canvas.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
-
-    /* NUMBER CROSSWORD PUZZLE ENGINE & CORRECT LOGIC */
-        const CROSSWORD_LEVELS = {
+    /* NUMBER CROSSWORD PUZZLE ENGINE */
+    const CROSSWORD_LEVELS = {
       1: {
         grid: [
           ['?', '+', '5', '=', '12', '', ''],
@@ -956,7 +955,6 @@
       }
     };
 
-
     let activeLevel = 1;
     let unlockedLevel = parseInt(localStorage.getItem('math_unlocked_level')) || 1;
     let currentGridState = [];
@@ -1130,7 +1128,6 @@
       }
     }
 
-
     /* STANDARD MATH GAME LOGIC */
     const TOTAL_QUESTIONS = 10, TIME_PER_QUESTION = 10;
     let questions = [], currentQuestionIndex = 0, userAnswers = [], timer = null, timeLeft = TIME_PER_QUESTION;
@@ -1157,84 +1154,68 @@
     }
 
     function onOpChange() { renderMathTable(); }
-function toggleModeUI() {
-  const mode = document.getElementById('mode-select').value;
-  const isGridLevel = (mode === 'grid_level');
-  const isComplex = (mode === 'complex');
-  const isSingle = (mode === 'single');
-  const isRandom = (mode === 'random');
-  
-  // 1. Sembunyikan OPERASI MATEMATIKA jika Mode Kompleks ATAU Teka-Teki Silang
-  const hideOpSelect = isComplex || isGridLevel;
-  document.getElementById('op-select').style.display = hideOpSelect ? 'none' : 'block';
-  document.getElementById('op-label').style.display = hideOpSelect ? 'none' : 'block';
+    function toggleModeUI() {
+      const mode = document.getElementById('mode-select').value;
+      const isGridLevel = (mode === 'grid_level');
+      const isComplex = (mode === 'complex');
+      const isSingle = (mode === 'single');
+      const isRandom = (mode === 'random');
+      
+      const hideOpSelect = isComplex || isGridLevel;
+      document.getElementById('op-select').style.display = hideOpSelect ? 'none' : 'block';
+      document.getElementById('op-label').style.display = hideOpSelect ? 'none' : 'block';
 
-  // 2. Tampilkan 'Fokus Pada Angka' HANYA saat Mode Angka Spesifik
-  document.getElementById('single-mode-ui').style.display = isSingle ? 'block' : 'none';
+      document.getElementById('single-mode-ui').style.display = isSingle ? 'block' : 'none';
+      document.getElementById('random-mode-ui').style.display = isRandom ? 'block' : 'none';
+      document.getElementById('table-card-container').style.display = isComplex ? 'none' : 'block';
 
-  // 3. Tampilkan 'Rentang Angka Acak' HANYA saat Mode Acak Standard (Kompleks tidak perlu lagi)
-  document.getElementById('random-mode-ui').style.display = isRandom ? 'block' : 'none';
-
-  // 4. Sembunyikan seluruh kartu Bagan/Level jika Mode Kompleks
-  document.getElementById('table-card-container').style.display = isComplex ? 'none' : 'block';
-
-  // 5. Atur isi kartu bawah (Bagan Referensi vs Grid Level)
-  if (isGridLevel) {
-    document.getElementById('table-title').textContent = 'Pilih Level Tantangan 🎯';
-    document.getElementById('math-table-wrapper').style.display = 'none';
-    document.getElementById('level-grid-wrapper').style.display = 'grid';
-    renderLevelGrid();
-  } else if (!isComplex) {
-    document.getElementById('table-title').textContent = 'Bagan Referensi 📚';
-    document.getElementById('math-table-wrapper').style.display = 'block';
-    document.getElementById('level-grid-wrapper').style.display = 'none';
-  }
-}
-
-
+      if (isGridLevel) {
+        document.getElementById('table-title').textContent = 'Pilih Level Tantangan 🎯';
+        document.getElementById('math-table-wrapper').style.display = 'none';
+        document.getElementById('level-grid-wrapper').style.display = 'grid';
+        renderLevelGrid();
+      } else if (!isComplex) {
+        document.getElementById('table-title').textContent = 'Bagan Referensi 📚';
+        document.getElementById('math-table-wrapper').style.display = 'block';
+        document.getElementById('level-grid-wrapper').style.display = 'none';
+      }
+    }
 
     function renderMathTable() {
-  const op = document.getElementById('op-select').value;
-  const table = document.getElementById('math-table');
+      const op = document.getElementById('op-select').value;
+      const table = document.getElementById('math-table');
 
-  if (op === 'division') {
-    // BAGAN PEMBAGIAN (Format Lengkap: 49÷7=7)
-    let html = `<thead><tr><th>÷</th>`;
-    // Header Kolom (Angka Pembagi: 1 sampai 10)
-    for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
-    html += '</tr></thead><tbody>';
+      if (op === 'division') {
+        let html = `<thead><tr><th>÷</th>`;
+        for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
+        html += '</tr></thead><tbody>';
 
-    // Header Baris (Hasil Bagi: 1 sampai 10)
-    for (let row = 1; row <= 10; row++) {
-      html += `<tr><td style="font-weight:bold">${row}</td>`;
-      for (let col = 1; col <= 10; col++) {
-        let dividend = row * col; 
-        // Menampilkan teks lengkap: [Angka]÷[Kolom]=[Baris]
-        // Contoh di Kolom 7, Baris 7: 49÷7=7
-        html += `<td style="font-size:0.6rem; padding:4px 1px; white-space:nowrap;">${dividend}÷${col}=${row}</td>`;
+        for (let row = 1; row <= 10; row++) {
+          html += `<tr><td style="font-weight:bold">${row}</td>`;
+          for (let col = 1; col <= 10; col++) {
+            let dividend = row * col; 
+            html += `<td style="font-size:0.6rem; padding:4px 1px; white-space:nowrap;">${dividend}÷${col}=${row}</td>`;
+          }
+          html += '</tr>';
+        }
+        html += '</tbody>';
+        table.innerHTML = html;
+      } else {
+        let html = `<thead><tr><th>×</th>`;
+        for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
+        html += '</tr></thead><tbody>';
+
+        for (let row = 1; row <= 10; row++) {
+          html += `<tr><td style="font-weight:bold">${row}</td>`;
+          for (let col = 1; col <= 10; col++) {
+            html += `<td>${row * col}</td>`;
+          }
+          html += '</tr>';
+        }
+        html += '</tbody>';
+        table.innerHTML = html;
       }
-      html += '</tr>';
     }
-    html += '</tbody>';
-    table.innerHTML = html;
-  } else {
-    // BAGAN PERKALIAN (Tetap Perkalian Standar)
-    let html = `<thead><tr><th>×</th>`;
-    for (let col = 1; col <= 10; col++) html += `<th>${col}</th>`;
-    html += '</tr></thead><tbody>';
-
-    for (let row = 1; row <= 10; row++) {
-      html += `<tr><td style="font-weight:bold">${row}</td>`;
-      for (let col = 1; col <= 10; col++) {
-        html += `<td>${row * col}</td>`;
-      }
-      html += '</tr>';
-    }
-    html += '</tbody>';
-    table.innerHTML = html;
-  }
-}
-
 
     function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
@@ -1257,54 +1238,48 @@ function toggleModeUI() {
     }
 
     function generateQuestions() {
-  questions = [];
-  const op = document.getElementById('op-select').value;
-  const mode = document.getElementById('mode-select').value;
-  let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
-  let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
-  if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
+      questions = [];
+      const op = document.getElementById('op-select').value;
+      const mode = document.getElementById('mode-select').value;
+      let minNum = parseInt(document.getElementById('min-num').value, 10) || 1;
+      let maxNum = parseInt(document.getElementById('max-num').value, 10) || 10;
+      if (minNum > maxNum) [minNum, maxNum] = [maxNum, minNum];
 
-  // 1. Mode Campuran Kompleks (3 Angka)
-  if (mode === 'complex') {
-    const ops = ['+', '-', '×'];
-    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-      let a = getRandomInt(3, 9), b = getRandomInt(2, 9), c = getRandomInt(1, 9);
-      let op1 = ops[getRandomInt(0, ops.length - 1)], op2 = ops[getRandomInt(0, ops.length - 1)];
-      let text = `${a} ${op1} ${b} ${op2} ${c}`, answer;
+      if (mode === 'complex') {
+        const ops = ['+', '-', '×'];
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+          let a = getRandomInt(3, 9), b = getRandomInt(2, 9), c = getRandomInt(1, 9);
+          let op1 = ops[getRandomInt(0, ops.length - 1)], op2 = ops[getRandomInt(0, ops.length - 1)];
+          let text = `${a} ${op1} ${b} ${op2} ${c}`, answer;
 
-      if (op1 === '×' && op2 !== '×') answer = (op2 === '+') ? (a * b) + c : (a * b) - c;
-      else if (op2 === '×' && op1 !== '×') answer = (op1 === '+') ? a + (b * c) : a - (b * c);
-      else if (op1 === '×' && op2 === '×') answer = a * b * c;
-      else answer = (op1 === '+') ? ((op2 === '+') ? a + b + c : a + b - c) : ((op2 === '+') ? a - b + c : a - b - c);
+          if (op1 === '×' && op2 !== '×') answer = (op2 === '+') ? (a * b) + c : (a * b) - c;
+          else if (op2 === '×' && op1 !== '×') answer = (op1 === '+') ? a + (b * c) : a - (b * c);
+          else if (op1 === '×' && op2 === '×') answer = a * b * c;
+          else answer = (op1 === '+') ? ((op2 === '+') ? a + b + c : a + b - c) : ((op2 === '+') ? a - b + c : a - b - c);
 
-      questions.push({ text: text, answer: answer });
+          questions.push({ text: text, answer: answer });
+        }
+        return;
+      }
+
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        let n1 = (mode === 'single') ? parseInt(document.getElementById('specific-num').value, 10) : getRandomInt(minNum, maxNum);
+        let n2 = getRandomInt(1, 10);
+
+        if (op === 'multiplication') {
+          questions.push({ 
+            text: `${n1} × ${n2}`, 
+            answer: n1 * n2 
+          });
+        } else if (op === 'division') {
+          let dividend = n1 * n2;
+          questions.push({ 
+            text: `${dividend} ÷ ${n1}`, 
+            answer: n2 
+          });
+        }
+      }
     }
-    return;
-  }
-
-  // 2. Mode Angka Spesifik & Acak Standard (2 Angka)
-  for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-    // n1 = Pembagi utama (sesuai Fokus Angka / Rentang Acak 3-9)
-    let n1 = (mode === 'single') ? parseInt(document.getElementById('specific-num').value, 10) : getRandomInt(minNum, maxNum);
-    // n2 = Target hasil bagi (1 sampai 10)
-    let n2 = getRandomInt(1, 10);
-
-    if (op === 'multiplication') {
-      questions.push({ 
-        text: `${n1} × ${n2}`, 
-        answer: n1 * n2 
-      });
-    } else if (op === 'division') {
-      // Pembagian bulat pas sesuai tabel (Contoh: 21 ÷ 3 = 7 atau 63 ÷ 9 = 7)
-      let dividend = n1 * n2;
-      questions.push({ 
-        text: `${dividend} ÷ ${n1}`, 
-        answer: n2 
-      });
-    }
-  }
-}
-
 
     function loadQuestion() {
       if (currentQuestionIndex >= TOTAL_QUESTIONS) { showResults(); return; }
@@ -1346,93 +1321,89 @@ function toggleModeUI() {
     }
 
     function showResults() {
-  showScreen(resultScreen);
-  let correctCount = userAnswers.filter(a => a.isCorrect).length;
-  
-  document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
-  
-  // Koleksi Pesan Motivasi Berdasarkan Skor
-  const messages = {
-    perfect: [
-      "Luar biasa! Kamu jenius matematika sejati! 🧠⚡",
-      "Sempurna! Tidak ada satu pun jawaban yang meleset! 🔥",
-      "Kecepatan dan ketelitianmu di atas rata-rata! Top banget! 🏆"
-    ],
-    good: [
-      "Kerja bagus! Otakmu makin cepat dan tajam! 🚀",
-      "Hasil yang sangat baik! Sedikit lagi mencapai nilai sempurna! 💪",
-      "Mantap! Pertahankan fokus dan kecepatan berpikirmu! ✨"
-    ],
-    average: [
-      "Lumayan! Latihan terus biar refleks matematikamu makin lihai! 📐",
-      "Progres yang bagus! Asah terus kecepatan otakmu setiap hari! ⚡",
-      "Jangan menyerah! Coba lagi dan kalahkan skor sebelumnya! 🎯"
-    ],
-    low: [
-      "Tidak apa-apa! Kegagalan adalah langkah awal menuju sukses! 🌱",
-      "Jangan patah semangat! Pelajari analisis jawaban di bawah ya! 💡",
-      "Yuk coba lagi! Otakmu butuh sedikit pemanasan ekstra! 🔥"
-    ]
-  };
+      showScreen(resultScreen);
+      let correctCount = userAnswers.filter(a => a.isCorrect).length;
+      
+      document.getElementById('score-display').textContent = `${correctCount}/${TOTAL_QUESTIONS}`;
+      
+      const messages = {
+        perfect: [
+          "Luar biasa! Kamu jenius matematika sejati! 🧠⚡",
+          "Sempurna! Tidak ada satu pun jawaban yang meleset! 🔥",
+          "Kecepatan dan ketelitianmu di atas rata-rata! Top banget! 🏆"
+        ],
+        good: [
+          "Kerja bagus! Otakmu makin cepat dan tajam! 🚀",
+          "Hasil yang sangat baik! Sedikit lagi mencapai nilai sempurna! 💪",
+          "Mantap! Pertahankan fokus dan kecepatan berpikirmu! ✨"
+        ],
+        average: [
+          "Lumayan! Latihan terus biar refleks matematikamu makin lihai! 📐",
+          "Progres yang bagus! Asah terus kecepatan otakmu setiap hari! ⚡",
+          "Jangan menyerah! Coba lagi dan kalahkan skor sebelumnya! 🎯"
+        ],
+        low: [
+          "Tidak apa-apa! Kegagalan adalah langkah awal menuju sukses! 🌱",
+          "Jangan patah semangat! Pelajari analisis jawaban di bawah ya! 💡",
+          "Yuk coba lagi! Otakmu butuh sedikit pemanasan ekstra! 🔥"
+        ]
+      };
 
-  // Pilih kategori pesan berdasarkan jumlah jawaban benar
-  let chosenCategory = [];
-  if (correctCount === TOTAL_QUESTIONS) {
-    document.getElementById('result-emoji').textContent = '🎉';
-    document.getElementById('result-title').textContent = 'Sempurna!';
-    chosenCategory = messages.perfect;
-  } else if (correctCount >= 7) {
-    document.getElementById('result-emoji').textContent = '👏';
-    document.getElementById('result-title').textContent = 'Hasil Bagus!';
-    chosenCategory = messages.good;
-  } else if (correctCount >= 4) {
-    document.getElementById('result-emoji').textContent = '👍';
-    document.getElementById('result-title').textContent = 'Tetap Semangat!';
-    chosenCategory = messages.average;
-  } else {
-    document.getElementById('result-emoji').textContent = '🥳';
-    document.getElementById('result-title').textContent = 'Yuk Coba Lagi!';
-    chosenCategory = messages.low;
-  }
+      let chosenCategory = [];
+      if (correctCount === TOTAL_QUESTIONS) {
+        document.getElementById('result-emoji').textContent = '🎉';
+        document.getElementById('result-title').textContent = 'Sempurna!';
+        chosenCategory = messages.perfect;
+      } else if (correctCount >= 7) {
+        document.getElementById('result-emoji').textContent = '👏';
+        document.getElementById('result-title').textContent = 'Hasil Bagus!';
+        chosenCategory = messages.good;
+      } else if (correctCount >= 4) {
+        document.getElementById('result-emoji').textContent = '👍';
+        document.getElementById('result-title').textContent = 'Tetap Semangat!';
+        chosenCategory = messages.average;
+      } else {
+        document.getElementById('result-emoji').textContent = '🥳';
+        document.getElementById('result-title').textContent = 'Yuk Coba Lagi!';
+        chosenCategory = messages.low;
+      }
 
-  // Ambil teks acak dari kategori yang sesuai
-  const randomMotivation = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+      const randomMotivation = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
 
-  // Buat HTML Tampilan Analisis Jawaban
-  let analysisHtml = `
-    <p style="font-style: italic; color: #ff7597; font-size: 0.85rem; margin-bottom: 16px; font-weight: 600;">
-      "${randomMotivation}"
-    </p>
-    <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Analisis Jawaban 📝</h3>
-    <div style="max-height: 220px; overflow-y: auto; text-align: left; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
-  `;
+      let analysisHtml = `
+        <p style="font-style: italic; color: #ff7597; font-size: 0.85rem; margin-bottom: 16px; font-weight: 600;">
+          "${randomMotivation}"
+        </p>
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Analisis Jawaban 📝</h3>
+        <div style="max-height: 220px; overflow-y: auto; text-align: left; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
+      `;
 
-  userAnswers.forEach((item, index) => {
-    let userText = '';
-    if (item.userAnswer === null) {
-      userText = '<span style="color: #ff0055;">Waktu Habis</span>';
-    } else if (item.isCorrect) {
-      userText = `<span style="color: #10b981;">${item.userAnswer} (Benar)</span>`;
-    } else {
-      userText = `<span style="color: #ff0055;">${item.userAnswer}</span>`;
+      userAnswers.forEach((item, index) => {
+        let userText = '';
+        if (item.userAnswer === null) {
+          userText = '<span style="color: #ff0055;">Waktu Habis</span>';
+        } else if (item.isCorrect) {
+          userText = `<span style="color: #10b981;">${item.userAnswer} (Benar)</span>`;
+        } else {
+          userText = `<span style="color: #ff0055;">${item.userAnswer}</span>`;
+        }
+
+        let borderColor = item.isCorrect ? '#10b981' : '#ff0055';
+
+        analysisHtml += `
+          <div style="background: rgba(0,0,0,0.4); border-left: 4px solid ${borderColor}; padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;">
+            <div style="font-weight: 800; color: #fff; margin-bottom: 2px;">${index + 1}. ${item.question}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem;">
+              Jawaban: ${userText} ${!item.isCorrect ? `<span style="color: #94a3b8;">(Benar: ${item.correctAnswer})</span>` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      analysisHtml += `</div>`;
+      
+      document.getElementById('result-message').innerHTML = analysisHtml;
     }
-
-    let borderColor = item.isCorrect ? '#10b981' : '#ff0055';
-
-    analysisHtml += `
-      <div style="background: rgba(0,0,0,0.4); border-left: 4px solid ${borderColor}; padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;">
-        <div style="font-weight: 800; color: #fff; margin-bottom: 2px;">${index + 1}. ${item.question}</div>
-        <div style="color: var(--text-muted); font-size: 0.8rem;">
-          Jawaban: ${userText} ${!item.isCorrect ? `<span style="color: #94a3b8;">(Benar: ${item.correctAnswer})</span>` : ''}
-        </div>
-      </div>
-    `;
-  });
-
-  analysisHtml += `</div>`;
-  
-  document.getElementById('result-message').innerHTML = analysisHtml;
-}
 
     window.onload = function() {
       createDefaultImage();
