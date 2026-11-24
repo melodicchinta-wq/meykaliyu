@@ -1,0 +1,24 @@
+{
+  "name": "MeyKaliyu",
+  "short_name": "kallianyu",
+  "description": "game mtk",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f9",
+  "theme_color": "#18191c",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "jpg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "jpg",
+      "purpose": "any maskable"
+    }
+  ]
+}
